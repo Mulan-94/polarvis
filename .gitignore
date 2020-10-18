@@ -1,5 +1,11 @@
 #All temp files
 *tmp
 
-#
+# readme file
 README.md
+
+#ignore the static folder
+static/plots
+
+#ignore the data files
+cyg_data/
