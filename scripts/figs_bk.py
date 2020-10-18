@@ -8,11 +8,12 @@ from bokeh.layouts import row, gridplot, layout, column
 from bokeh.models import ColumnDataSource, Whisker, Line, Circle
 
 from bokeh.embed import json_item, components
-
 from ipdb import set_trace
 
-lambda_data = np.loadtxt(
-    '/home/lexya/Desktop/pictor-A-stuff/cyg_data/LAMBDA/Lambda-Data-0.txt')
+
+data_path = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data"
+
+lambda_data = np.loadtxt(f'{data_path}/LAMBDA/Lambda-Data-0.txt')
 lam = lambda_data[:, 0]
 Q = lambda_data[:, 1]
 U = lambda_data[:, 2]
@@ -25,11 +26,12 @@ PAerr = lambda_data[:, 8]
 
 P = (Q**2 + U**2)**0.5
 fpol = Q / I + 1j * U / I  # fractional polarization
-Perr = ((Q / P)**2 * Qerr**2 + (U / P)**2 * Uerr**2)**0.5
+Perr = (
+    (Q / P)**2 * Qerr**2
+    + (U / P)**2 * Uerr**2)**0.5
 fpol_err = np.absolute(fpol) * ((Perr / P)**2 + (Ierr / I)**2)**0.5
 
-depth_data = np.loadtxt(
-    '/home/lexya/Desktop/pictor-A-stuff/cyg_data/DEPTH/Faraday-Depth-Data-0.txt')
+depth_data = np.loadtxt(f'{data_path}/DEPTH/Faraday-Depth-Data-0.txt')
 depth_range = depth_data[:, 0]
 fcleaned = depth_data[:, 1] + 1j * depth_data[:, 2]
 
@@ -41,6 +43,7 @@ def make_fig(data, specs, errors=None):
     axes = specs.pop("axes")
     labels = specs.pop("labels")
 
+    data = ColumnDataSource(data=data)
     fig = figure(plot_width=pw, plot_height=ph, sizing_mode="stretch_width",
                  **labels)
     gl = glyph(**axes)
@@ -49,12 +52,13 @@ def make_fig(data, specs, errors=None):
 
     if errors:
         err_data = errors.pop("data")
+        err_data = ColumnDataSource(data=err_data)
         er = Whisker(source=err_data,
                      line_cap="round", line_color="red",
                      line_alpha=0.7, lower_head=None, upper_head=None,
                      line_width=0.5, **errors)
         fig.add_layout(er)
-
+    set_trace()
     fig.axis.axis_label_text_font = "monospace"
     fig.axis.axis_label_text_font_style = "normal"
 
@@ -79,8 +83,8 @@ err = {
     "plower": PA - PAerr,
 }
 
-cds_data = ColumnDataSource(data=data)
-cds_err = ColumnDataSource(data=err)
+cds_data = data
+cds_err = err
 
 specs = {"pw": 600, "ph": 450}
 
@@ -119,14 +123,12 @@ fspec_fig = make_fig(cds_data, specs)
 outp = gridplot(children=[column(row([fpol_fig, pa_fig]),
                                  fspec_fig)], ncols=1,
                 sizing_mode="stretch_width")
-# output_file("first_out.html")
-# save(outp, filename="first_out.html")
 
-#script, div = components(outp)
-
-p_path = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/static/plots/"
+p_path = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/static/plots/reg0"
 fname = "testplot.json"
 fname = os.path.join(p_path, fname)
 
 with open(fname, "w") as fn:
-    json.dump(json_item(outp, "afd"), fn)
+    json.dump(json_item(outp), fn)
+
+outp = dict(fpol=fpol_fig, pa=pa_fig, fspec=fspec_fig)

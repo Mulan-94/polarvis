@@ -1,71 +1,63 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-    <!-- JS9 stuff-->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" > 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="image/x-icon" rel="shortcut icon" href="/static/JS9/favicon.ico">
-    <link type="text/css" rel="stylesheet" href="/static/JS9/js9support.css">
-    <link type="text/css" rel="stylesheet" href="/static/JS9/js9.css">
-    <link rel="apple-touch-icon" href="/static/JS9/images/js9-apple-touch-icon.png">
-    <script type="text/javascript" src="/static/JS9/js9prefs.js"></script>
-    <script type="text/javascript" src="/static/JS9/js9support.min.js"></script>
-    <script type="text/javascript" src="/static/JS9/js9.min.js"></script>
-    <script type="text/javascript" src="/static/JS9/js9plugins.js"></script>
+   <head>
+       <!-- JS9 stuff-->
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" > 
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link type="image/x-icon" rel="shortcut icon" href="/static/JS9/favicon.ico">
+       <link type="text/css" rel="stylesheet" href="/static/JS9/js9support.css">
+       <link type="text/css" rel="stylesheet" href="/static/JS9/js9.css">
+       <link rel="apple-touch-icon" href="/static/JS9/images/js9-apple-touch-icon.png">
+       <script type="text/javascript" src="/static/JS9/js9prefs.js"></script>
+       <script type="text/javascript" src="/static/JS9/js9support.min.js"></script>
+       <script type="text/javascript" src="/static/JS9/js9.min.js"></script>
+       <script type="text/javascript" src="/static/JS9/js9plugins.js"></script>
 
-    <!-- Bokeh stuff-->
-    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.2.min.js"></script>
+       <!-- Bokeh stuff-->
+       <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.2.min.js"></script>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="static/JS9/custom.css")}}>
+       <!-- Custom CSS -->
+       <link rel="stylesheet" type="text/css" href="static/css/custom.css")}}>
 
-    <style type="text/css">
-      #div {
-          position: relative;
-          top:  25px;
-          left: 25px;
-      }
-    </style>
+       <title>JS9</title>
 
-    <title>JS9</title>
-
-</head>
-<body>
-   <div class="float-parent">
-      <div class="float-child">
-         <div id="mainJS9div">
-            <div class="JS9Menubar"></div>
-            <div class="JS9Toolbar"></div>
-            <div class="JS9"></div>
-            <div style="margin-top: 2px;">
-            <div class="JS9Statusbar"></div></div>
+   </head>
+   <body>
+      <div class="float-parent">
+         <div class="float-child" id="images">
+            <div id="div">
+               <div class="JS9Menubar"></div>
+               <div class="JS9Toolbar"></div>
+               <div class="JS9"></div>
+               <div style="margin-top: 2px;">
+               <div class="JS9Statusbar"></div></div>
+            </div>
          </div>
+      {% for pname, mpath in plots.items() %}
+         <div class="float-child" id="plots">
+            <div id={{ pname }}>
+               <script>
+                  var p_loc = "{{ mpath }}";
+                  var p_id = "{{pname}}";
+                  fetch(p_loc)
+                  .then(response => response.json())
+                  .then(item => Bokeh.embed.embed_item(item, p_id))
+                  .catch(err => console.log(err))
+               </script>
+            </div>
+         </div>
+      {% endfor %}
       </div>
-   {% for pname, mpath in plots.items() %}
-      <div class="float-child" id={{ pname }}>
-         <script>
-            var p_loc = "{{ mpath }}";
-            var p_id = "{{pname}}";
-            fetch(p_loc)
-            .then(response => response.json())
-            .then(item => Bokeh.embed.embed_item(item, p_id))
-            .catch(err => console.log(err))
-         </script>
-      </div>
-   {% endfor %}
-   </div>
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#mainJS9div").draggable({
-            handle: "#JS9Menubar",
-            opacity: 0.35
-            });
-        });
-    </script>
-
-</body>
+       <!-- <script type="text/javascript">
+           $(document).ready(function(){
+               $("#mainJS9div").draggable({
+               handle: "#JS9Menubar",
+               opacity: 0.35
+               });
+           });
+       </script> -->
+   </body>
 
 </html>
