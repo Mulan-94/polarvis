@@ -1,0 +1,8 @@
+.float-parent{
+    border: 1px white;
+}
+
+.float-child{
+    float: left;
+    width: 50%;
+}
