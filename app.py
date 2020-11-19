@@ -11,6 +11,8 @@ import os
 import json
 from ipdb import set_trace
 
+app = Flask(__name__)
+
 
 def read_plot_json(in_file):
     with open(in_file, "r") as fn:
@@ -47,20 +49,14 @@ def plot_catalogue(reg_id):
     #     plots = None
     return plots
 
-app = Flask("cygserver")
-
 
 # the / route binds localhost/ to this method.
 # i.e when we land to this website, this is the first thing we meet
 
+@app.route("/")
 @app.route("/home")
 def home():
     return render_template("home.html")
-
-
-@app.route("/")
-def index():
-    return redirect(url_for("home"))
 
 
 @app.route("/js9")
@@ -73,9 +69,9 @@ def oops():
     return render_template("404.html")
 
 
+@app.route("/plot/")
 @app.route("/plot<int:reg_id>")
 def get_bk_plots(reg_id=None):
-
     if not reg_id:
         reg_id = 0
 
@@ -86,6 +82,13 @@ def get_bk_plots(reg_id=None):
         return render_template("js9.html", plots=plots)
     else:
         return redirect(url_for("oops"))
+
+
+@app.route("/images/")
+def images():
+    im_url = os.path.join(app.static_url_path, "images")
+    for image in os.listdir(im_url):
+        pass
 
 
 if __name__ == "__main__":

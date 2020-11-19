@@ -125,10 +125,10 @@ outp = gridplot(children=[column(row([fpol_fig, pa_fig]),
                 sizing_mode="stretch_width")
 
 p_path = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/static/plots/reg0"
-fname = "testplot.json"
+fname = "testplot.json"difference between iframe and div
 fname = os.path.join(p_path, fname)
 
 with open(fname, "w") as fn:
     json.dump(json_item(outp), fn)
-
+difference between iframe and div
 outp = dict(fpol=fpol_fig, pa=pa_fig, fspec=fspec_fig)

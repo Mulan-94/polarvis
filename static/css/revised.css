@@ -1,0 +1,120 @@
+html {
+    width: 100%;
+    height: 95%;
+    margin: 2px;
+}
+
+.layout-wrapper {
+    display: grid;
+    grid-template-areas:
+    /* "im-window im-window im-window"
+        "previous-plot current-plot next-plot"; 
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, auto);
+    */
+        "im-window previous-plot"
+        "im-window current-plot"
+        "im-window next-plot";
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    /* grid-template-rows: repeat(3, minmax(100px, 31vh)); */
+    gap: 20px;
+    /* justify-content: center; */
+}
+
+.images {
+    grid-area: im-window;
+    border: 2px solid rgb(190,208,244);
+    background-color: rgba(215,183,188, 0.2);
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.js9-container {
+    max-width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.JS9Toolbar{
+    overflow: visible;
+}
+
+#JS9ToolbarToolbar{
+    min-height: 80px !important;
+    height: auto;
+}
+
+.separator{
+    /* Empty space to allow expansion of the toolbar */
+    padding: 25px; 
+    order: 1;
+} 
+
+.JS9Statusbar {
+    margin-top: 5px;
+    border: 1px dashed black;
+}
+
+.JS9 {
+    width: 100%!important;
+    /* max-width: 100%!important; */
+    height: 79% !important;
+}
+
+
+.plots {
+    border: 2px solid rgb(190,208,244);
+    background-color: rgba(0, 89, 255, 0.2);
+    border-radius: 8px;
+    padding: 3px;
+    /* Added min height and removed padding from 150px to maintain */
+    /* padding: 150px; */
+    min-height: 29vh;
+    height: 100%;
+    width: 100%;
+    /* visibility: hidden; */
+}
+
+.plot-holder{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: visible;
+    resize: both;
+    /* max-width: 100%;
+    max-height: 100%;
+    overflow: auto; */
+    /* transform: scale(0.8); */
+    /* zoom: 0.5; */
+}
+
+iframe {
+    border: none;
+    width: 97vw;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    -moz-transform: scale(0.5);
+    -moz-transform-origin: 0 0;
+    -webkit-transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+}
+
+/* @media screen and (-webkit-min-device-pixel-ratio:0) {
+    #scaled-frame {
+        zoom: 1;
+    }
+} */
+
+.previous {
+    grid-area: previous-plot;
+}
+
+.current {
+    grid-area: current-plot;
+}
+
+.next {
+    grid-area: next-plot;
+}

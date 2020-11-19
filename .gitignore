@@ -9,3 +9,21 @@ static/plots
 
 #ignore the data files
 cyg_data/
+
+#any fits files
+*.fits
+*.FITS
+
+#any images in the images stuff
+static/images
+
+#any vscode stuff
+.vscode/
+
+#cache
+__pycache__/
+
+#all cache
+*cache*
+
+*.pyc

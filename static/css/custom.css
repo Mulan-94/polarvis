@@ -2,8 +2,6 @@ html, body {
     border-width: 2px;
     height: 99%;
     margin: 3px;
-    /*border-style: solid;
-    border-color: green;*/
 }
 
 .float-parent {
@@ -15,7 +13,6 @@ html, body {
     margin: 3px;
     padding: 5px;
     height: inherit;
-    /*object-fit: contain;*/
 }
 
 .float-child {
@@ -30,9 +27,29 @@ html, body {
     height: 90%%;
 }
 
+#images {
+}
+
+#plots{
+    zoom: 0.5;
+    transform: scale(0.5);
+    transition: 1s ease;
+}
+#plots:hover{
+    zoom: 1;
+    transform: scale(1);
+    transition: 1s ease;
+}
+
+
 #div{
     width: 100%;
     height: 100%;
+}
+
+#div:hover{
+    /*zoom: 0.5;
+    transform: scale(0.5);*/
 }
 
 .JS9{

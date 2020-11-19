@@ -151,3 +151,69 @@ JS9.Regions.opts
 # JS9.Catalogs.opts.update(
 #     {updateWCS: true, selectable: true,
 #      hasControls: true, hasBorders: true, hasRotatingPoint: true})
+
+
+#for the data get data percentile
+def get_percentiles(in_data, pc=99.9):
+    max_pc = 100
+    min_pc = max_pc - pc
+    upper = np.round(np.nanpercentile(in_data, pc), 4)
+    lower = np.round(np.nanpercentile(in_data, min_pc), 4)
+    #return {"scalemin": upper, "scalemax": lower}
+    return lower, upper
+
+
+# set the zoom level for the image
+js.SetZoom("tofit")
+js.SetScale("linear", *myscales)
+
+js.Load(im_name, {"fits2fits": "always", "xdim": 4096, "ydim": 4096, "bin": 1})
+
+def add_circle_region(im_obj, x, y, r=2, coords="physical", kwargs=None):
+    """ Add a circle region to image
+
+    Parameters
+    ----------
+    im_obj: 
+        The JS9 object
+    x: float
+        X position of the circle
+    y: float
+        Y position of the circle
+    r: float
+        Circle radius
+    coords: str
+        The coordinate system used to specify positions
+    kwargs: dict
+        General options for the shapes
+
+    """
+    reg_obj = f"""{coords}; circle({x}, {y}, {r})"""
+    reg_id = im_obj.AddRegions(reg_obj, kwargs)
+    return reg_id
+
+
+for x, y in zip(x1, y1):
+    reg_ids.append(add_circle_region(js, x, y))
+
+los_file = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data/cyg_los.txt"
+
+reg_file = "/home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data/cyg_los.reg"
+
+
+def make_region_file(infile, outfile):
+    """ REgion file for physical coordinates of Lerato's data
+    """
+    with open(infile, "r") as fl:
+        datas = fl.readlines()
+
+    for idx, data in enumerate(datas):
+        coords = data.split()[-2:]
+        datas[idx] = f"""circle({coords[0]}, {coords[1]}, {3}){{"tags": ["{idx}"]}}\n"""
+
+    datas.insert(0, "image\n")
+
+    with open(outfile, "w") as fl:
+        fl.writelines(datas)
+
+    return "success"

@@ -2,6 +2,7 @@ import numpy as np
 import json
 import os
 
+from bokeh.io import save, output_file
 from bokeh.embed import json_item, components
 from bokeh.layouts import row, gridplot, layout, column
 from bokeh.models import ColumnDataSource, Whisker, Line, Circle
@@ -26,8 +27,12 @@ def read_data(in_file):
 
 def write_data(model, name, o_file):
     o_path = os.path.join(os.environ['CYGSERVER'], "static", "plots", o_file)
-    with open(o_path, "w") as fn:
-        json.dump(json_item(model, name), fn)
+    if ".html" not in o_file:
+        with open(o_path, "w") as fn:
+            json.dump(json_item(model, name), fn)
+    else:
+        output_file(o_path)
+        save(model)
 
 
 def rss(a, b):
@@ -113,6 +118,8 @@ d_dir = list_data(os.path.join(data_path, "DEPTH"))
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
+    if _i > 1000:
+        break
     l_data = compute_lambda_data(l_file)
     l_errors = l_data.pop("errors")
     l_data = ColumnDataSource(data=l_data)
@@ -144,6 +151,8 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     outp = gridplot(children=[column(row([fpol_fig, pa_fig]), fspec_fig)],
                     ncols=1, sizing_mode="stretch_both")
 
-    print(f"Writing reg{_i}.json")
+    #change to .json if you want a json output
+    o_file = f"reg{_i}.html"
+    print(f"Writing {o_file}")
 
-    write_data(model=outp, name=f"reg{_i}", o_file=f"reg{_i}.json")
+    write_data(model=outp, name=f"reg{_i}", o_file=o_file)
