@@ -76,24 +76,43 @@ var JS9Prefs = {
                 
                 let iframe = document.createElement("iframe");
                 Object.assign(iframe, {
-                    sandbox: "allow-same-origin allow-scripts",
+                    // sandbox: "allow-same-origin allow-scripts",
+                    width: "97vw",
                     height: "190%", scrolling: "no",
                     seamless: "seamless", frameborder: "0"
                 });
                 iframe.src = `http://${location.host}/${plotPath}${regionId}.html`;
 
                 plotContainer = removeAllChildNodes(plotContainer);
+                plotContainer.dataset.id = regionId;
                 plotContainer.title = `Plot for region ${regionId}`;
                 plotContainer.appendChild(plotTitle);
                 plotContainer.appendChild(iframe);
             }
+
+            function switchPosition(clickedReg){
+                //get the incumbent's data id
+
+                let currentPlot = document.getElementById("current-plot");
+                let previousPlot = document.getElementById("previous-plot");
+
+                let currentRegId = currentPlot.dataset.hasOwnProperty("id") ? currentPlot.dataset.id : -1;
+
+                currentPlot = removeAllChildNodes(currentPlot);
+                previousPlot= removeAllChildNodes(previousPlot);
+                
+                if (currentRegId != -1){
+                    loadPlot(currentRegId, "previous-plot");
+                }
+                loadPlot(clickedReg, "current-plot");
+
+            }
             
-            let xregTagNum = Number(xreg.tags[0]);
+            // adding 1 because JS9 assigns IDs from 1 and plots are tagging from 0
+            let xregTagNum = Number(xreg.tags[0]) + 1;
 
             if (Number.isInteger(xregTagNum)){
-                let xregId = xreg.id;
-
-                JS9.ChangeRegions(tags=xregTagNum, {color: "white"});
+                JS9.ChangeRegions(tags=xregTagNum, {color: "white", width: 5});
 
                 let plotIds = {
                                 "previous-plot": xregTagNum-1, 
@@ -102,7 +121,8 @@ var JS9Prefs = {
                             };
 
                 //entries generates list of lists of an object
-                Object.entries(plotIds).forEach(([pid, reg]) => loadPlot(reg, pid));
+                // Object.entries(plotIds).forEach(([pid, reg]) => loadPlot(reg, pid));
+                switchPosition(xregTagNum);
             }
             else{
                 alert("No plots available for the selected region");
