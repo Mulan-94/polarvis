@@ -21,7 +21,7 @@
     <script src="../static/JS9/js9support.min.js"></script>
     <script src="../static/JS9/js9.min.js"></script>
     <script src="../static/JS9/js9plugins.js"></script>
-
+    <script type="text/javascript" src="../static/JS9/plugins/core/info.js"></script>
     
 
     <!-- Custom CSS -->
@@ -32,6 +32,13 @@
   </head>
 
   <body>
+    <!-- <div class="modal" id="plot-modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <iframe  class="modal-iframe" width="97vw" height="190%" scrolling="no" seamless="seamless" frameborder="0"></iframe>
+      </div>
+    </div> -->
+
     <div class="layout-wrapper"> 
       <div class="images">
         <div class="js9-container">
@@ -42,20 +49,27 @@
           <div class="JS9Colorbar" data-width="100%"></div>
           <div class="JS9Statusbar" data-width="100%"></div>
         </div>
-      </div>
-      <div class="plots previous">
-        <div class="plot-holder" id="previous-plot">
-        Previous
+        <div class="js9-light-windows">
+          <div class="light-window info">
+            <div>Image information</div>
+            <div class="JS9Info" data-width="auto"></div>
+          </div>
+          <div class="light-window panning">
+            <div>Panner</div>
+            <div class="JS9Panner" data-width="auto"></div>
+          </div>
+          <div class="light-window magnifying">
+            <div>Magnifier</div>
+            <div class="JS9Magnifier" data-width="auto"></div>
+          </div>
         </div>
       </div>
-      <div class="plots current">
-        <div class="plot-holder" id="current-plot">
-          Current
+      <div class="plots-container">
+        <div class="plots current">
+          <div class="plot-holder" id="current-plot"></div>
         </div>
-      </div>
-      <div class="plots next">
-        <div class="plot-holder" id="next-plot">
-          Next
+        <div class="plots previous">
+          <div class="plot-holder" id="previous-plot"></div>
         </div>
       </div>
     </div>
