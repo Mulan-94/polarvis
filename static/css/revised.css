@@ -10,8 +10,8 @@ html {
         "im-window current-plot"
         "im-window previous-plot";
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 47vh);
-    gap: 20px;
+    grid-template-rows: repeat(2, minmax(30vh, 48vh));
+    gap: 10px;
 }
 
 .images {
@@ -20,13 +20,16 @@ html {
     background-color: rgba(215,183,188, 0.2);
     border-radius: 8px;
     padding: 5px;
+    display: flex;
+    flex-flow: column;
 }
 
 .js9-container {
     max-width: 100%;
-    height: 100%;
-    border: 1px solid black;
+    height: 80%;
+    border: 1px dashed  rgb(148, 142, 142);
     border-radius: 5px;
+    flex: 3;
 }
 
 .JS9Toolbar{
@@ -46,19 +49,47 @@ html {
 
 .JS9Statusbar {
     margin-top: 5px;
-    border: 1px dashed black;
+    border-top: 1px dashed rgb(148, 142, 142);
+    /* border-bottom: 1px dashed rgb(148, 142, 142); */
 }
 
 .JS9 {
     width: 100%!important;
     /* max-width: 100%!important; */
-    height: 79% !important;
+    max-height: 68% !important;
 }
 
+.js9-light-windows{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex: 2;
+    overflow: hidden;
+}
+
+.light-window {
+    border: 1px none grey;
+    border-radius: 3%;
+    font-family: monospace;
+    padding: 5px;
+    margin: 1px;
+    flex: 1;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.js9InfoTable .input2 {
+    width: auto !important;
+}
+
+.js9Info{
+    overflow: auto;
+}
 
 .plots {
     border: 2px solid rgb(190,208,244);
-    background-color: #f7f1f2;
+    background-color: #89ABE35F;
     border-radius: 8px;
     padding: 3px;
     /* Added min height and removed padding from 150px to maintain */
@@ -88,10 +119,10 @@ iframe {
     width: 200%;
 }
 
-.previous {
+.plots-container.previous {
     grid-area: previous-plot;
 }
 
-.current {
+.plots-container.current {
     grid-area: current-plot;
 }
