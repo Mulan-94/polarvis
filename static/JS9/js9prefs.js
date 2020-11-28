@@ -66,12 +66,15 @@ var JS9Prefs = {
                 return parent;
             }
 
-            function loadPlot(regionId, containerId){
+            function loadPlot(regionId, containerId, colour){
 
                 let plotPath = "/static/plots/reg";
                 let plotContainer = document.getElementById(containerId);
                 let plotTitle = document.createElement("div");
-                plotTitle.innerHTML = `Region ${regionId}`;
+
+                JS9.ChangeRegions(regionId, {color: colour});
+
+                plotTitle.innerHTML = `Region ${regionId} <span style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color:${colour}; vertical-align: middle;"></span>`;
                 plotTitle.style = "font-family: monospace; font-size: 13px;";
                 
                 let iframe = document.createElement("iframe");
@@ -96,15 +99,22 @@ var JS9Prefs = {
                 let currentPlot = document.getElementById("current-plot");
                 let previousPlot = document.getElementById("previous-plot");
 
+                // get region IDs for the plots stored in the id variable
                 let currentRegId = currentPlot.dataset.hasOwnProperty("id") ? currentPlot.dataset.id : -1;
+                let previousRegId = previousPlot.dataset.hasOwnProperty("id") ? previousPlot.dataset.id : -1;
+
+                if (previousRegId != -1) {
+                    JS9.ChangeRegions(previousRegId, { color: "black" });
+                }
 
                 currentPlot = removeAllChildNodes(currentPlot);
-                previousPlot= removeAllChildNodes(previousPlot);
+                previousPlot = removeAllChildNodes(previousPlot);
                 
+                //load a plot to previous plot's region if there's a current plot
                 if (currentRegId != -1){
-                    loadPlot(currentRegId, "previous-plot");
+                    loadPlot(currentRegId, "previous-plot", "white");
                 }
-                loadPlot(clickedReg, "current-plot");
+                loadPlot(clickedReg, "current-plot", "#A907F8");
 
             }
             
@@ -112,16 +122,7 @@ var JS9Prefs = {
             let xregTagNum = Number(xreg.tags[0]) + 1;
 
             if (Number.isInteger(xregTagNum)){
-                JS9.ChangeRegions(tags=xregTagNum, {color: "white", width: 5});
-
-                let plotIds = {
-                                "previous-plot": xregTagNum-1, 
-                                "current-plot": xregTagNum, 
-                                "next-plot": xregTagNum+1
-                            };
-
-                //entries generates list of lists of an object
-                // Object.entries(plotIds).forEach(([pid, reg]) => loadPlot(reg, pid));
+                JS9.ChangeRegions(tags = xregTagNum, { color: "#A907F8", strokeWidth: 8});
                 switchPosition(xregTagNum);
             }
             else{
@@ -129,40 +130,5 @@ var JS9Prefs = {
             }
 
             }
-
-        /*angle: 0,
-        aradius1: 4,
-        aradius2: 8,
-        configURL: "./params/regionsconfig.html",
-        fontFamily: "Helvetica",
-        fontSize: 14,
-        fontStyle: "normal",
-        fontWeight: 300,
-        height: 60,
-        iradius: 0,
-        linepoints: (2)[{ … }, { … }],
-        nannuli: 2,
-        noCenteredScaling: (2)["box", "line"],
-        onchange: null,
-        onmousedown: ƒ(c, b, d, e),
-        onmouseover: ƒ onmouseover(im, xreg),
-        onmouseup: ƒ(),
-        oradius: 30,
-        panzoom: true,
-        polypoints: (3)[{ … }, { … }, { … }],
-        ptshape: "box",
-        ptsize: 2,
-        r1: 30,
-        r2: 20,
-        radius: 30,
-        saveURL: "./params/regionssave.html",
-        sortOverlapping: true,
-        strokeWidth: 2,
-        tags: "source,include",
-        textAlign: "left",
-        title: "Edit region",
-        updateWCS: true,
-        width: 60,
-        */
     }
 }

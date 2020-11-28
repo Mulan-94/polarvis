@@ -1,11 +1,24 @@
 """
-CYG-FPOL-XLO.FITS: This is the fractional polarization map at 8 GHz -- I masked the image by considering pixels with total intensity > 5 * off-axis image_noise. We can use this map as the background image. This is the same image I used for Fig 5 of the paper.
+CYG-FPOL-XLO.FITS: This is the fractional polarization map at 8 GHz -- I masked
+the image by considering pixels with total intensity > 5 * off-axis image_noise.
+We can use this map as the background image. This is the same image I used for
+Fig 5 of the paper.
 
-CYG-LOS.txt: This is a text file containing the actual location of the lines of sight. There are four columns: RA in milliarcseconds, Dec in millarcseconds, RA in pixel, and Dec in pixel. The latter two are what you need to locations in the image itself (identifiers), and the first two may be additional information but not relevant for now.
+CYG-LOS.txt: This is a text file containing the actual location of the lines of
+ sight. There are four columns: RA in milliarcseconds, Dec in millarcseconds, 
+ RA in pixel, and Dec in pixel. The latter two are what you need to locations 
+ in the image itself (identifiers), and the first two may be additional 
+ information but not relevant for now.
 
-LAMBDA.zip: In here are 2096 text files for different lines of sight. There are 9 columns: lambda^2 in m^2, Stokes Q in Jy/beam, Stokes U in Jy/beam, Stokes I in Jy/beam, Position Angle in Jy/beam, noise in Q in Jy/beam, noise in U in Jy/beam, noise in I in Jy/beam, and noise in Position Angle in Jy/beam. 
+LAMBDA.zip: In here are 2096 text files for different lines of sight. There are 
+9 columns: lambda^2 in m^2, Stokes Q in Jy/beam, Stokes U in Jy/beam, 
+Stokes I in Jy/beam, Position Angle in Jy/beam, noise in Q in Jy/beam, 
+noise in U in Jy/beam, noise in I in Jy/beam, and noise in Position Angle in Jy/beam. 
 
-DEPTH.zip  In here are 2096 text files for the different lines of sight. There are 3 columns: Faraday depth, Stokes Q, Stokes U. Note that the difference between these Stokes and the above ones is their space: the above are in frequency space, and these are in Faraday space. 
+DEPTH.zip  In here are 2096 text files for the different lines of sight. 
+There are 3 columns: Faraday depth, Stokes Q, Stokes U. Note that the difference 
+between these Stokes and the above ones is their space: the above are in frequency 
+space, and these are in Faraday space. 
 
 LEXY.zip Faraday Depth, dirty q, dirty u, clean q and clean u
 
@@ -13,7 +26,7 @@ plot-lexy.py: This script gives an example of plotting data in LAMBDA.zip and DE
 
 
 Start the helper server using:
- node /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/JS9/js9Helper.js 1>~/logs/js9node.log 2>&1 &
+node /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/JS9/js9Helper.js 1>~/logs/js9node.log 2>&1 &
 """
 import numpy as np
 import json
