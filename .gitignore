@@ -15,7 +15,7 @@ cyg_data/
 *.FITS
 
 #any images in the images stuff
-static/images
+static/images/*
 
 #any vscode stuff
 .vscode/
@@ -25,5 +25,5 @@ __pycache__/
 
 #all cache
 *cache*
-
 *.pyc
+
