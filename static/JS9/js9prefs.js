@@ -93,7 +93,8 @@ var JS9Prefs = {
             let xregTagNum = Number(xreg.tags[0]) + 1;
 
             if (Number.isInteger(xregTagNum)){
-                JS9.ChangeRegions(tags = xregTagNum, { color: "#A907F8", strokeWidth: 8});
+                console.log(`Region ID: ${xreg.id} ${xregTagNum == xreg.id ? "does" : "doesn't"} match tag number: ${xregTagNum}`);
+                JS9.ChangeRegions(tags=xregTagNum, { color: "#A907F8", strokeWidth: 8});
                 switchPosition(xregTagNum);
             }
             else{

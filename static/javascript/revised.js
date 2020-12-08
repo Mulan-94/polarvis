@@ -62,29 +62,3 @@ function percentiles(percent, inp){
 // im_data.data;
 // im_data.dmax;
 // im_data.dmin;
-
-// onmouseover: function loadPlot(im, xreg) {
-//     let plotPath = "/static/plots/reg";
-//     let currPlot = document.getElementById("current-plot");
-//     function removeAllChildNodes(parent) {
-//         while (parent.firstChild) {
-//             parent.removeChild(parent.firstChild);
-//         }
-//         return parent;
-//     }
-//     debugger;
-//     removeAllChildNodes(currPlot);
-
-//     var pids = ["previous-plot", "current-plot", "next-plot"];
-//     for (let i = 0; i < pids.length; i++) {
-//         // set subraction index to get previous, current and next plots
-//         let idx = i - 1;
-//         let currPlot = document.getElementById(pids[i]);
-//         currPlot = removeAllChildNodes(currPlot);
-//         currPlot.title = `Plot for region ${xreg.id + idx}`;
-//         fetch(`http://127.0.0.1:5500/${plotPath}${xreg.id + idx}.json`)
-//             .then(response => response.json())
-//             .then(item => Bokeh.embed.embed_item(item, pids[i]))
-//             .catch(err => console.log(err))
-
-//     }

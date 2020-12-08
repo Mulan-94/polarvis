@@ -2,6 +2,7 @@ html {
     width: 99%;
     height: 97%;
     margin: 2px;
+    overflow: hidden;
 }
 
 .layout-wrapper {
