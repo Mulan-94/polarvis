@@ -128,8 +128,9 @@ def compute_lambda_data(in_file):
 
     frac_pol_err = fractional_pol_error(frac_pol, stokes_i, power, stokes_i_err, power_err)
 
-    return dict(power=power, frac_pol=np.abs(frac_pol), pos_angle=pos_angle,
-                lambdas=lamb,
+    return dict(power=power, frac_pol=np.abs(frac_pol), 
+                frac_re=np.real(frac_pol), frac_im=np.imag(frac_pol),
+                pos_angle=pos_angle, lambdas=lamb,
                 errors=dict(power=power_err, frac_pol=frac_pol_err,
                             pos_angle=pos_angle_err))
 
@@ -204,13 +205,14 @@ d_dir = list_data(os.path.join(data_path, "LEXY"))
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
-    # if _i > 2:
-    #     break
+    if _i > 2:
+        break
     
     # if "-590" not in l_file:
     #     continue
 
     l_data = compute_lambda_data(l_file)
+
     l_errors = l_data.pop("errors")
     l_data = ColumnDataSource(data=l_data)
     plot_specs = dict(glyph=Circle,
@@ -219,6 +221,17 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
                                   y_axis_label="Fractional Polarization")
                       )
     fpol_fig = make_figure(l_data, plot_specs, errors=l_errors)
+    fp_re = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_re", line_color="#C9BC36", fill_color="#202221", size=5), visible=False)
+    fp_im = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_im", line_color="#36C972", fill_color="#005599", size=5), visible=False)
+
+    fpol_fig.y_range.only_visible = True
+
+    fpol_fig.add_layout(Legend(items=[("fractional polarisation", [fpol_fig.renderers[0]]), 
+                                      ("real", [fp_re]),
+                                      ("imag", [fp_im])
+                                      ],
+                               click_policy="hide"))
+
 
     # fpol_fig.extra_y_ranges = {"pa": Range1d(start=min(l_data.data["pos_angle"]), 
     #                                         end=max(l_data.data["pos_angle"]))
