@@ -72,20 +72,16 @@ def power_fn(q, u):
     return np.sqrt(np.square(q) + np.square(u))
 
 def fractional_pol(i, q, u):
-    fpol = (q/i) + (u/i) * 1j
-    return np.abs(fpol)
+    fpol = (q/i) + (u* 1j/i)
+    return fpol
 
 def power_error(p, q, u, q_err, u_err):
     res = np.square((q/p)) * np.square(q_err) + np.square((u/p)) * np.square(u_err)
     return np.sqrt(res)
 
 def fractional_pol_error(fpol, i, p, i_err, p_err):
-    res = np.abs(fpol) * np.square((p_err/p)) + np.square((i_err/i))
-    return np.sqrt(res)
-
-def rss(a, b):
-    """Square root for sum of squares"""
-    return np.sqrt(np.square(a) + np.square(b))
+    res = np.abs(fpol) * np.sqrt(np.square((p_err/p)) + np.square((i_err/i)))
+    return res
 
 def amplitude(inp):
     return np.abs(inp)
@@ -125,13 +121,14 @@ def compute_lambda_data(in_file):
 
     power = power_fn(stokes_q, stokes_u)
 
+    # This is converted from complex to abolute in the retun dict ONLY
     frac_pol = fractional_pol(stokes_i, stokes_q, stokes_u)
 
     power_err = power_error(power, stokes_q, stokes_u, stokes_q_err, stokes_u_err)
 
     frac_pol_err = fractional_pol_error(frac_pol, stokes_i, power, stokes_i_err, power_err)
 
-    return dict(power=power, frac_pol=frac_pol, pos_angle=pos_angle,
+    return dict(power=power, frac_pol=np.abs(frac_pol), pos_angle=pos_angle,
                 lambdas=lamb,
                 errors=dict(power=power_err, frac_pol=frac_pol_err,
                             pos_angle=pos_angle_err))
@@ -196,8 +193,12 @@ def make_figure(data, plot_specs, errors=None, fig=None):
 # the pathis here: /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data/LAMBDA/
 data_path = os.path.join(os.environ["CYGSERVER"], "cyg_data")
 
+
+#lambda directory
 l_dir = list_data(os.path.join(data_path, "LAMBDA"))
 # d_dir = list_data(os.path.join(data_path, "DEPTH"))
+
+#depth directory with both clean and dirty
 d_dir = list_data(os.path.join(data_path, "LEXY"))
 
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
@@ -205,6 +206,10 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     # stokes space
     # if _i > 2:
     #     break
+    
+    # if "-590" not in l_file:
+    #     continue
+
     l_data = compute_lambda_data(l_file)
     l_errors = l_data.pop("errors")
     l_data = ColumnDataSource(data=l_data)
