@@ -44,7 +44,8 @@ from flask import url_for
 
 from ipdb import set_trace
 
-os.environ["CYGSERVER"] = os.path.abspath("..")
+# os.environ["CYGSERVER"] = os.path.abspath("..") REmoved this because path keeps changing whenthe running directory is different
+os.environ["CYGSERVER"] = os.path.abspath(__file__).split("scripts")[0]
 
 
 def list_data(in_dir):
@@ -155,7 +156,7 @@ def compute_depth_data(in_file, clean=True, y="amp"):
                 "imag": imaginary
             }
 
-    status = (1, 2) if clean else (3, 4)
+    status = (3, 4) if clean else (1, 2)
 
     data = read_data(in_file)
     depth_range = data[:, 0]
@@ -192,6 +193,7 @@ def make_figure(data, plot_specs, errors=None, fig=None):
 
 
 
+# the pathis here: /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data/LAMBDA/
 data_path = os.path.join(os.environ["CYGSERVER"], "cyg_data")
 
 l_dir = list_data(os.path.join(data_path, "LAMBDA"))
