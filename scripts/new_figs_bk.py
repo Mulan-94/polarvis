@@ -35,7 +35,7 @@ import os
 from bokeh.io import save, output_file
 from bokeh.embed import json_item, components
 from bokeh.layouts import row, gridplot, layout, column
-from bokeh.models import (ColumnDataSource, Whisker, Line, Circle, Range1d, LinearAxis,
+from bokeh.models import (ColumnDataSource, Whisker, Line, Circle, Range1d, LinearAxis, DataRange1d,
                           Panel, Tabs, Legend, LegendItem)
 from bokeh.plotting import figure
 from flask import url_for
@@ -130,9 +130,10 @@ def compute_lambda_data(in_file):
 
     return dict(power=power, frac_pol=np.abs(frac_pol), 
                 frac_re=np.real(frac_pol), frac_im=np.imag(frac_pol),
+                q=stokes_q, u=stokes_u,
                 pos_angle=pos_angle, lambdas=lamb,
                 errors=dict(power=power_err, frac_pol=frac_pol_err,
-                            pos_angle=pos_angle_err))
+                            pos_angle=pos_angle_err, u=stokes_u_err, q=stokes_q_err))
 
 
 def error_margins(base, y, err):
@@ -176,10 +177,13 @@ def make_figure(data, plot_specs, errors=None, fig=None):
         fig = figure(plot_width=400, plot_height=400, sizing_mode="stretch_both", tooltips=tooltips)
 
     gl = glyph(**axes)
-    fig.add_glyph(data, gl)
+    fig.add_glyph(data, gl, name="werrs")
 
     if errors:
         ebars = error_margins(base=data.data[gl.x], y=data.data[gl.y], err=errors[gl.y])
+        ebars.name="ebar"
+        ebars.js_link("visible", fig.renderers[0], "visible")
+        fig.renderers[0].js_link("visible", ebars, "visible")
         fig.add_layout(ebars)
 
     fig.axis.axis_label_text_font = "monospace"
@@ -205,8 +209,8 @@ d_dir = list_data(os.path.join(data_path, "LEXY"))
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
-    if _i > 2:
-        break
+    # if _i > 2:
+    #     break
     
     # if "-590" not in l_file:
     #     continue
@@ -217,36 +221,79 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     l_data = ColumnDataSource(data=l_data)
     plot_specs = dict(glyph=Circle,
                       axes=dict(x="lambdas", y="frac_pol", line_color="#5D60A2", fill_color="#5D60A2", size=5),
-                      labels=dict(x_axis_label="Wavelength [m$^{2}$]",
+                      labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Fractional Polarization")
                       )
     fpol_fig = make_figure(l_data, plot_specs, errors=l_errors)
-    fp_re = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_re", line_color="#C9BC36", fill_color="#202221", size=5), visible=False)
-    fp_im = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_im", line_color="#36C972", fill_color="#005599", size=5), visible=False)
+    fp_re = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_re", line_color="#C9BC36",
+                                             fill_color="#202221", size=5), 
+                                visible=False)
+    fp_im = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_im", line_color="#36C972", 
+                                             fill_color="#005599", size=5),
+                              visible=False)
 
     fpol_fig.y_range.only_visible = True
 
-    fpol_fig.add_layout(Legend(items=[("fractional polarisation", [fpol_fig.renderers[0]]), 
+    fpol_fig.extra_y_ranges = {"pa": DataRange1d(start=min(l_data.data["pos_angle"]), 
+                                            end=max(l_data.data["pos_angle"]), only_visible = True)
+                              }
+    fp_pa = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="pos_angle", fill_color="#00712a",
+                                             line_color="#00712a"),
+                                             visible=False)
+    fpol_fig.add_layout(LinearAxis(y_range_name="pa", axis_label="Polarization angle (λ²) rad",
+                        axis_label_text_font="monospace",
+                        axis_label_text_font_style="normal"), 'right')
+
+    fpol_fig.add_layout(Legend(items=[("amp", [fpol_fig.renderers[0]]), 
                                       ("real", [fp_re]),
-                                      ("imag", [fp_im])
+                                      ("imag", [fp_im]),
+                                      ("polarization angle", [fp_pa])
                                       ],
                                click_policy="hide"))
 
-
-    # fpol_fig.extra_y_ranges = {"pa": Range1d(start=min(l_data.data["pos_angle"]), 
-    #                                         end=max(l_data.data["pos_angle"]))
-    #                           }
+    ###################################################
+    ##############3 SEcond plot
+    plot_specs = dict(glyph=Circle,
+                      axes=dict(x="lambdas", y="q", line_color="#5D60A2", fill_color="#5D60A2", size=5),
+                      labels=dict(x_axis_label="Wavelength [m²]",
+                                  y_axis_label="Stokes Q and U")
+                      )
     
-    # fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="pos_angle", fill_color="#60A25D"))
-    # fpol_fig.add_layout(LinearAxis(y_range_name="pa"), 'right')
+    fpol_fig2 = make_figure(l_data, plot_specs, errors=l_errors)
+
+    # major kludge for my convenience O_o
+    plot_specs = dict(glyph=Circle,
+                      axes=dict(x="lambdas", y="u", line_color="#C9BC36", fill_color="#202221", size=5),
+                      labels=dict(x_axis_label="Wavelength [m²]",
+                                  y_axis_label="Stokes Q and U")
+                      )
+
+
+    fpol_fig2b = make_figure(l_data, plot_specs, errors=l_errors)
+    fpol_fig2.renderers += fpol_fig2b.renderers
+    fpol_fig2.renderers.append(fpol_fig2b.select_one("ebar"))
+    # fp_u = fpol_fig2.add_glyph(l_data, Circle(x="lambdas", y="u", line_color="#C9BC36",
+    #                                          fill_color="#202221", size=5), 
+    #                             visible=False)
+
+    fpol_fig2.y_range.only_visible = True
+    fpol_fig2.add_layout(Legend(items=[("Q", [fpol_fig2.renderers[0]]), 
+                                      ("U", [fpol_fig2.renderers[1]])
+                                      ],
+                               click_policy="hide"))
+
+    fpol_fig = Tabs(tabs=[Panel(child=fpol_fig, title="Fractional pol"), Panel(child=fpol_fig2, title="Q and U")])
+
+
+   
 
     """
     #position angle stuff
     plot_specs = dict(glyph=Circle,
                       axes=dict(x="lambdas", y="pos_angle", line_color="blue"),
                       labels=dict(
-                          y_axis_label='Polarization Angle (lambda^2)[rad]',
-                          x_axis_label='Wavelength [m$^{2}$]')
+                          y_axis_label='Polarization Angle (lambda²)[rad]',
+                          x_axis_label='Wavelength [m²]')
                       )
     pa_fig = make_figure(l_data, plot_specs, errors=l_errors)
     """
@@ -263,7 +310,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
             plot_specs = dict(glyph=Line,
                             axes=dict(x="depth", y="fday_clean", line_color=colour, line_width=3, line_alpha=0.8),
                             labels=dict(y_axis_label='Fractional Faraday Spectrum',
-                                        x_axis_label='Faraday Depth [rad m^{-2}]')
+                                        x_axis_label='Faraday Depth [rad m²]')
                             )
             if idx < 1:
                 fspec_fig = make_figure(depth_data, plot_specs)
