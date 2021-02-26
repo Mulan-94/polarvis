@@ -30,3 +30,4 @@ __pycache__/
 js9/*
 !js9/js9prefs.js
 !js9/js9Prefs.json
+!data
