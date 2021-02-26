@@ -81,7 +81,7 @@ function lodLosPlots(im, xreg){
 
 
 function loadLosRegs(){
-    JS9.LoadRegions("./js9/data/cyg_los-fk5.reg", {"selectable": false, 
+    JS9.LoadRegions("./js9/data/cyg_los.reg", {"selectable": false, 
                                                 "removeable": false, 
                                                 "strokeWidth":1});
 }
