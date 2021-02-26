@@ -5,17 +5,16 @@
 README.md
 
 #ignore the static folder
-static/plots
-
-#ignore the data files
-cyg_data/
+plots/*
 
 #any fits files
 *.fits
 *.FITS
 
-#any images in the images stuff
-static/images/*
+#ignore some of the random data and any images and stuff
+images/*
+!cyg_los-fk5.reg
+!cyg_los.reg
 
 #any vscode stuff
 .vscode/
@@ -28,6 +27,6 @@ __pycache__/
 *.pyc
 
 #ignore everythin in JS9 except js9prefs
-static/JS9/*
-!static/JS9/js9prefs.js
-!static/JS9/js9Prefs.json
+js9/*
+!js9/js9prefs.js
+!js9/js9Prefs.json
