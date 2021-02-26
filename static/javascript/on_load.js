@@ -70,7 +70,7 @@ function lodLosPlots(im, xreg){
 
     if (Number.isInteger(xregTagNum)){
         console.log(`Region ID: ${xreg.id} ${xregTagNum == xreg.id ? "does" : "doesn't"} match tag number: ${xregTagNum}`);
-        JS9.ChangeRegions(tags=xregTagNum, { color: "#A907F8", strokeWidth: 8});
+        JS9.ChangeRegions(tags=xregTagNum, { color: "#A907F8", strokeWidth: 5});
         switchPosition(xregTagNum);
     }
     else{
@@ -81,17 +81,20 @@ function lodLosPlots(im, xreg){
 
 
 function loadLosRegs(){
-        JS9.LoadRegions("images/cyg_los.reg");
+    JS9.LoadRegions("./js9/data/cyg_los-fk5.reg", {"selectable": false, 
+                                                "removeable": false, 
+                                                "strokeWidth":1});
 }
 
 
 function initialiseCygnus(){
     JS9.CloseImage({clear: true});
-    JS9.Preload("images/CYG-0.75-SLO-I.FITS",
+    JS9.Preload("./js9/data/nh-CYG-0.75-SLO-I.FITS",
         {
             "zoom": "toFit", "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 0.5, "onload": loadLosRegs,
-            "fits2fits": true
+            // "fits2fits": false,
+            "parentFile": "./js9/data/nh-CYG-0.75-SLO-I.FITS"
         });
 }

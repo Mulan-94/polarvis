@@ -1,0 +1,3 @@
+ErrorDocument 403 /cygnus/static/templates/error_pages/403.html
+ErrorDocument 404 /cygnus/static/templates/error_pages/404.php
+
