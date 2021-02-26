@@ -2,7 +2,7 @@
 *tmp
 
 # readme file
-README.md
+#README.md
 
 #ignore the static folder
 plots/*
