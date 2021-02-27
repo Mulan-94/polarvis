@@ -9,10 +9,11 @@ html {
     display: grid;
     grid-template-areas:
         "im-window current-plot"
-        "im-window previous-plot";
+        "im-window previous-plot"
+        "im-window former-plot";
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(30vh, 48vh));
-    gap: 10px;
+    grid-template-rows: repeat(3, minmax(20vh, 31.8vh));
+    grid-gap: 15px 5px;
 }
 
 .images {
@@ -126,4 +127,8 @@ iframe {
 
 .plots-container.current {
     grid-area: current-plot;
+}
+
+.plots-container.former {
+    grid-area: former-plot;
 }
