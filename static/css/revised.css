@@ -119,7 +119,20 @@ iframe {
     -webkit-transform: scale(0.5);
     -webkit-transform-origin: 0 0;
     width: 200%;
+
+    opacity: 1;
+    animation: fadeIn ease 5s;
+    -webkit-animation: fadeIn ease 5s;
+    -moz-animation: fadeIn ease 5s;
+    -o-animation: fadeIn ease 5s;
+    -ms-animation: fadeIn ease 5s;
 }
+
+@keyframes fadeIn {
+   0% {opacity:0;}
+  100% {opacity:1;}
+}
+
 
 .plots-container.previous {
     grid-area: previous-plot;
@@ -132,3 +145,4 @@ iframe {
 .plots-container.former {
     grid-area: former-plot;
 }
+
