@@ -60,13 +60,15 @@ def read_data(in_file):
 
 
 def write_data(model, name, o_file):
-    o_path = os.path.join(os.environ['CYGSERVER'], "static", "plots", o_file)
+    o_path = os.path.join(os.environ['CYGSERVER'], "plots", o_file)
+    # I.e. if the file was a json file. I was using this when I wanted to load 
+    # the plot in a div
     if ".html" not in o_file:
         with open(o_path, "w") as fn:
             json.dump(json_item(model, name), fn)
     else:
-        output_file(o_path)
-        save(model)
+        output_file(o_path, title=name)
+        save(model, filename=o_path)
 
 def power_fn(q, u):
     return np.sqrt(np.square(q) + np.square(u))
@@ -196,7 +198,7 @@ def make_figure(data, plot_specs, errors=None, fig=None):
 
 
 # the pathis here: /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/cyg_data/LAMBDA/
-data_path = os.path.join(os.environ["CYGSERVER"], "cyg_data")
+data_path = os.path.join(os.environ["CYGSERVER"], "images")
 
 
 #lambda directory
@@ -206,11 +208,13 @@ l_dir = list_data(os.path.join(data_path, "LAMBDA"))
 #depth directory with both clean and dirty
 d_dir = list_data(os.path.join(data_path, "LEXY"))
 
+los_pos = read_data(os.path.join(data_path, "cyg_los.txt"))
+
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
-    # if _i > 2:
-    #     break
+    if _i > 2:
+        break
     
     # if "-590" not in l_file:
     #     continue
@@ -334,5 +338,6 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     #change to .json if you want a json output
     o_file = f"reg{_i}.html"
     print(f"Writing {o_file}")
+    set_trace()
 
-    write_data(model=outp, name=f"reg{_i}", o_file=o_file)
+    write_data(model=outp, name=f"Region-{_i}_Pos({los_pos[_i][2]}, {los_pos[_i][3]})", o_file=o_file)
