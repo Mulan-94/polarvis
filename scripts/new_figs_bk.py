@@ -213,8 +213,8 @@ los_pos = read_data(os.path.join(data_path, "cyg_los.txt"))
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
-    if _i > 2:
-        break
+    # if _i > 10:
+    #     break
     
     # if "-590" not in l_file:
     #     continue
@@ -336,8 +336,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     outp = gridplot(children=[fpol_fig, fspec_fig], ncols=2, sizing_mode="stretch_both")
 
     #change to .json if you want a json output
-    o_file = f"reg{_i}.html"
+    o_file = f"reg{_i+1}.html"
     print(f"Writing {o_file}")
-    set_trace()
 
-    write_data(model=outp, name=f"Region-{_i}_Pos({los_pos[_i][2]}, {los_pos[_i][3]})", o_file=o_file)
+    write_data(model=outp, name=f"LoS-{_i} Region-{_i+1}_Pos({los_pos[_i][2]}, {los_pos[_i][3]})", o_file=o_file)
