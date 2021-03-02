@@ -109,7 +109,7 @@ function initialiseCygnus(){
             "zoom": "toFit", 
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
-            "scalemax": 0.5, "onload": loadLosRegs,
+            "scalemax": 10, "onload": loadLosRegs,
             "parentFile": "./js9/data/nh-CYG-0.75-SLO-I.FITS"
         });
 }
