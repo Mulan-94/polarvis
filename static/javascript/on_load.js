@@ -83,15 +83,17 @@ function loadPlot(regionTag, containerId, colour){
 function lodLosPlots(im, xreg){
     let xregTagNum = Number(xreg.tags[0]);
     
+    if (xreg.tags[1] == "los") {
 
-    if (Number.isInteger(xregTagNum)){
-        console.log(`Region ID: ${xreg.id} ${xregTagNum == xreg.id ? "does" : "doesn't"} match tag number: ${xregTagNum}`);
-        JS9.ChangeRegions(id=xregTagNum, { color: "#A907F8", strokeWidth: 5});
-        
-        switchPosition(xregTagNum);
-    }
-    else{
-        alert("No plots available for the selected region");
+        if (Number.isInteger(xregTagNum)){
+            console.log(`Region ID: ${xreg.id} ${xregTagNum == xreg.id ? "does" : "doesn't"} match tag number: ${xregTagNum}`);
+            JS9.ChangeRegions(id=xregTagNum, { color: "#A907F8", strokeWidth: 5});
+            
+            switchPosition(xregTagNum);
+        }
+        else{
+            alert("No plots available for the selected region");
+        }
     }
 }
 
