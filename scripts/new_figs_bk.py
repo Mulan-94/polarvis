@@ -10,18 +10,14 @@ CYG-LOS.txt: This is a text file containing the actual location of the lines of
  in the image itself (identifiers), and the first two may be additional 
  information but not relevant for now.
 
-LAMBDA.zip: In here are 2096 text files for different lines of sight. There are 
-9 columns: lambda^2 in m^2, Stokes Q in Jy/beam, Stokes U in Jy/beam, 
-Stokes I in Jy/beam, Position Angle in Jy/beam, noise in Q in Jy/beam, 
-noise in U in Jy/beam, noise in I in Jy/beam, and noise in Position Angle in Jy/beam. 
+fl 
 
 DEPTH.zip  In here are 2096 text files for the different lines of sight. 
 There are 3 columns: Faraday depth, Stokes Q, Stokes U. Note that the difference 
 between these Stokes and the above ones is their space: the above are in frequency 
 space, and these are in Faraday space. 
 
-LEXY.zip Faraday Depth, dirty q, dirty u, clean q and clean u
-
+fl
 plot-lexy.py: This script gives an example of plotting data in LAMBDA.zip and DEPTH.zip. 
 
 
@@ -46,6 +42,13 @@ from ipdb import set_trace
 
 # os.environ["CYGSERVER"] = os.path.abspath("..") REmoved this because path keeps changing whenthe running directory is different
 os.environ["CYGSERVER"] = os.path.abspath(__file__).split("scripts")[0]
+
+AMP_COLOUR = "#21317B"
+IMAG_COLOUR = "#202221"
+ANGLE_COLOUR = "#00712a"
+REAL_COLOUR = "#f26521"
+CIRCLE_SIZE = 7
+ALPHA = 1
 
 
 def list_data(in_dir):
@@ -142,7 +145,7 @@ def error_margins(base, y, err):
     ebars = Whisker(source=ColumnDataSource(data=dict(base=base, 
                     upper=y + err, lower=y - err)),
                     line_cap="round", line_color="red",
-                    line_alpha=0.7, lower_head=None, upper_head=None,
+                    line_alpha=ALPHA, lower_head=None, upper_head=None,
                     line_width=0.5, base="base", upper="upper", lower="lower")
     return ebars
 
@@ -190,6 +193,7 @@ def make_figure(data, plot_specs, errors=None, fig=None):
 
     fig.axis.axis_label_text_font = "monospace"
     fig.axis.axis_label_text_font_style = "normal"
+    fig.axis. axis_label_text_font_size = "15px"
     fig.yaxis.axis_label=labels["y_axis_label"]
     fig.xaxis.axis_label=labels["x_axis_label"]
 
@@ -208,12 +212,15 @@ l_dir = list_data(os.path.join(data_path, "LAMBDA"))
 #depth directory with both clean and dirty
 d_dir = list_data(os.path.join(data_path, "LEXY"))
 
+#RMTF dir
+r_dir = list_data(os.path.join(data_path, "GAUSSIAN-RMTF"))
+
 los_pos = read_data(os.path.join(data_path, "cyg_los.txt"))
 
 for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # stokes space
-    # if _i > 10:
+    # if _i > 2:
     #     break
     
     # if "-590" not in l_file:
@@ -224,16 +231,16 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     l_errors = l_data.pop("errors")
     l_data = ColumnDataSource(data=l_data)
     plot_specs = dict(glyph=Circle,
-                      axes=dict(x="lambdas", y="frac_pol", line_color="#5D60A2", fill_color="#5D60A2", size=5),
+                      axes=dict(x="lambdas", y="frac_pol", line_color=AMP_COLOUR, fill_color=AMP_COLOUR, size=CIRCLE_SIZE),
                       labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Fractional Polarization")
                       )
     fpol_fig = make_figure(l_data, plot_specs, errors=l_errors)
-    fp_re = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_re", line_color="#C9BC36",
-                                             fill_color="#202221", size=5), 
+    fp_re = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_re", line_color=REAL_COLOUR,
+                                             fill_color=REAL_COLOUR, size=CIRCLE_SIZE), 
                                 visible=False)
-    fp_im = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_im", line_color="#36C972", 
-                                             fill_color="#005599", size=5),
+    fp_im = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="frac_im", line_color=IMAG_COLOUR, 
+                                             fill_color=IMAG_COLOUR, size=CIRCLE_SIZE),
                               visible=False)
 
     fpol_fig.y_range.only_visible = True
@@ -241,24 +248,24 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     fpol_fig.extra_y_ranges = {"pa": DataRange1d(start=min(l_data.data["pos_angle"]), 
                                             end=max(l_data.data["pos_angle"]), only_visible = True)
                               }
-    fp_pa = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="pos_angle", fill_color="#00712a",
-                                             line_color="#00712a"),
+    fp_pa = fpol_fig.add_glyph(l_data, Circle(x="lambdas", y="pos_angle", fill_color=ANGLE_COLOUR,
+                                             line_color=ANGLE_COLOUR, size=CIRCLE_SIZE),
                                              visible=False)
     fpol_fig.add_layout(LinearAxis(y_range_name="pa", axis_label="Polarization angle (λ²) rad",
-                        axis_label_text_font="monospace",
+                        axis_label_text_font="monospace", axis_label_text_font_size="15px",
                         axis_label_text_font_style="normal"), 'right')
 
-    fpol_fig.add_layout(Legend(items=[("amp", [fpol_fig.renderers[0]]), 
-                                      ("real", [fp_re]),
-                                      ("imag", [fp_im]),
-                                      ("polarization angle", [fp_pa])
+    fpol_fig.add_layout(Legend(items=[("Amp", [fpol_fig.renderers[0]]), 
+                                      ("Real", [fp_re]),
+                                      ("Imag", [fp_im]),
+                                      ("Polarization angle", [fp_pa])
                                       ],
-                               click_policy="hide"))
+                               click_policy="hide", label_text_font_size="15px"))
 
     ###################################################
     ##############3 SEcond plot
     plot_specs = dict(glyph=Circle,
-                      axes=dict(x="lambdas", y="q", line_color="#5D60A2", fill_color="#5D60A2", size=5),
+                      axes=dict(x="lambdas", y="q", line_color=AMP_COLOUR, fill_color=AMP_COLOUR, size=CIRCLE_SIZE),
                       labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Stokes Q and U")
                       )
@@ -267,7 +274,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # major kludge for my convenience O_o
     plot_specs = dict(glyph=Circle,
-                      axes=dict(x="lambdas", y="u", line_color="#C9BC36", fill_color="#202221", size=5),
+                      axes=dict(x="lambdas", y="u", line_color=IMAG_COLOUR, fill_color=IMAG_COLOUR, size=CIRCLE_SIZE),
                       labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Stokes Q and U")
                       )
@@ -277,14 +284,14 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     fpol_fig2.renderers += fpol_fig2b.renderers
     fpol_fig2.renderers.append(fpol_fig2b.select_one("ebar"))
     # fp_u = fpol_fig2.add_glyph(l_data, Circle(x="lambdas", y="u", line_color="#C9BC36",
-    #                                          fill_color="#202221", size=5), 
+    #                                          fill_color="#202221", size=CIRCLE_SIZE), 
     #                             visible=False)
 
     fpol_fig2.y_range.only_visible = True
     fpol_fig2.add_layout(Legend(items=[("Q", [fpol_fig2.renderers[0]]), 
                                       ("U", [fpol_fig2.renderers[1]])
                                       ],
-                               click_policy="hide"))
+                               click_policy="hide", label_text_font_size="15px"))
 
     fpol_fig = Tabs(tabs=[Panel(child=fpol_fig, title="Fractional pol"), Panel(child=fpol_fig2, title="Q and U")])
 
@@ -293,7 +300,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     """
     #position angle stuff
-    plot_specs = dict(glyph=Circle,
+    plot_specs = dict(glyph=Circle, size=CIRCLE_SIZE
                       axes=dict(x="lambdas", y="pos_angle", line_color="blue"),
                       labels=dict(
                           y_axis_label='Polarization Angle (lambda²)[rad]',
@@ -307,25 +314,42 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
         cstat = "clean" if clean else "dirty"
         legends = []
 
-        for idx,( yx, colour) in enumerate([("amp", "#f26522"), ("phase", "#00712a"), ("imag", "#005599"), ("real", "#202221")]):
+        for idx,( yx, colour) in enumerate([("amp", AMP_COLOUR), ("real", REAL_COLOUR), ("imag", IMAG_COLOUR), ("phase", ANGLE_COLOUR)]):
             # Faraday space
             depth_data = ColumnDataSource(data=compute_depth_data(d_file, clean, yx))
 
             plot_specs = dict(glyph=Line,
-                            axes=dict(x="depth", y="fday_clean", line_color=colour, line_width=3, line_alpha=0.8),
+                            axes=dict(x="depth", y="fday_clean", line_color=colour, line_width=3, line_alpha=ALPHA),
                             labels=dict(y_axis_label='Fractional Faraday Spectrum',
                                         x_axis_label='Faraday Depth [rad m²]')
                             )
+            if yx == "phase":
+                plot_specs["axes"].update({"line_dash": "dashed"})
             if idx < 1:
                 fspec_fig = make_figure(depth_data, plot_specs)
                 fspec_fig.y_range.only_visible = True
             else:
                 fspec_fig = make_figure(depth_data, plot_specs, fig=fspec_fig)
                 fspec_fig.renderers[idx].visible=False
-            legends.append(LegendItem(label=yx, renderers=[fspec_fig.renderers[idx]], index=idx))
+            legends.append(LegendItem(label=yx.capitalize(), renderers=[fspec_fig.renderers[idx]], index=idx))
         
-        fspec_fig.add_layout(Legend(items=legends, click_policy="hide"))
+        fspec_fig.add_layout(Legend(items=legends, click_policy="hide", label_text_font_size="15px"))
         depths.append(Panel(child=fspec_fig, title=cstat.title()))
+
+    #RMTF DATA
+
+    plot_specs = dict(glyph=Line,
+                            axes=dict(x="r_depth", y="rmtf", line_color="red", line_width=3, line_alpha=ALPHA),
+                            labels=dict(y_axis_label='Rotation Measure Transfer Function',
+                                        x_axis_label='Faraday Depth [rad m²]')
+                            )
+    rdata = read_data(r_dir[_i])
+    rmtf_data = ColumnDataSource(data={"r_depth": rdata[:,0], "rmtf": rdata[:,1]})
+    fspec_fig2 = make_figure(rmtf_data, plot_specs)
+    depths.append(Panel(child=fspec_fig2, title="RMTF"))
+
+    #### end OF rmtf
+    
 
     fspec_fig = Tabs(tabs=depths)
 
