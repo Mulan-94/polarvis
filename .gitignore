@@ -1,5 +1,6 @@
 #All temp files
 *tmp
+!images/tmp/.gitkeep
 
 # readme file
 #README.md
