@@ -26,7 +26,7 @@ __pycache__/
 *cache*
 *.pyc
 
-#ignore everythin in JS9 except js9prefs
+#ignore everything in JS9 except js9prefs
 js9install/*
 !js9/js9prefs.js
 !js9/js9Prefs.json
