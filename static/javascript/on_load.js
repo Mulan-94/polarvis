@@ -109,7 +109,7 @@ function lodLosPlots(im, xreg){
 
 
 function loadLosRegs(){
-    JS9.LoadRegions("./js9/data/cyg_los-fk5.reg", {"selectable": false, 
+    JS9.LoadRegions("./js9install/data/cyg_los-fk5.reg", {"selectable": false, 
                                                 "removeable": false, 
                                                 "strokeWidth":1});
 }
@@ -117,7 +117,7 @@ function loadLosRegs(){
 
 function initialiseCygnus(){
     JS9.ADDZOOM = 0.5;
-    JS9.Preload("./js9/data/nh-CYG-0.75-SLO-I.FITS",
+    JS9.Preload("./js9install/data/nh-CYG-0.75-SLO-I.FITS",
         {
             "zoom": "tofit", 
             "colormap": "inferno",
