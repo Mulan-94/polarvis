@@ -123,6 +123,6 @@ function initialiseCygnus(){
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 10, "onload": loadLosRegs,
-            "parentFile": "./js9/data/nh-CYG-0.75-SLO-I.FITS"
+            "parentFile": "./js9install/data/nh-CYG-0.75-SLO-I.FITS"
         });
 }
