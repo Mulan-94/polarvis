@@ -12,8 +12,8 @@ html {
         "im-window previous-plot"
         "im-window former-plot";
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(3, minmax(20vh, 31.8vh));
-    grid-gap: 15px 5px;
+    grid-template-rows: repeat(3, minmax(32.8vh, 32.8vh));
+    grid-column-gap: 3px;
 }
 
 .images {
@@ -95,11 +95,12 @@ html {
     border-radius: 8px;
     padding: 3px;
     /* Added min height and removed padding from 150px to maintain */
-    /* padding: 150px; */
     min-height: 29vh;
     height: 100%;
     width: 100%;
-    /* visibility: hidden; */
+    display: flex;
+    height: 96.5%;
+    margin: 2px;
 }
 
 .plot-holder{
@@ -119,7 +120,6 @@ iframe {
     -webkit-transform: scale(0.5);
     -webkit-transform-origin: 0 0;
     width: 200%;
-
     opacity: 1;
     animation: fadeIn ease 5s;
     -webkit-animation: fadeIn ease 5s;
@@ -146,3 +146,10 @@ iframe {
     grid-area: former-plot;
 }
 
+.plots.current {
+  margin-top: 0px;
+}
+
+.plots.former {
+  margin-bottom: 0px;
+}

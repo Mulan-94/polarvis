@@ -48,6 +48,7 @@ function loadPlot(regionTag, containerId, colour){
     // regionTag: the region's TAG number. Identical to its id number
     let plotPath = "cygnus/plots/reg";
     let plotContainer = document.getElementById(containerId);
+    let allContainer = document.getElementsByClassName(containerId.split("-")[0])[0];
     let plotTitle = document.createElement("div");
     let plot = `http://${location.host}/${plotPath}${regionTag}.html`;
 
@@ -59,15 +60,23 @@ function loadPlot(regionTag, containerId, colour){
                            background-color:${colour}; vertical-align: middle;">
                            </span>
                            <a href="${plot}" target="_blank" rel="noreferrer noopener">
-                           <img src="static/icons/nt.png" style="float: right;" width="20" 
+                           <img src="static/icons/nt.png" style="vertical-align: middle;" width="20" 
                            height="20" title="Open this plot in a new tab"></a>`;
-    plotTitle.style = "font-family: monospace; font-size: 13px;";
+    plotTitle.style = `font-family: monospace; font-size: 10px; writing-mode: sideways-lr;
+                       position: absolute; align-self: end;`;
+
+    if (allContainer.childElementCount <2){
+        allContainer.prepend(plotTitle);
+    }
+    else{
+        allContainer.replaceChild(plotTitle, allContainer.childNodes[0]);
+    }
     
     let iframe = document.createElement("iframe");
     Object.assign(iframe, {
         // sandbox: "allow-same-origin allow-scripts",
         width: "97vw",
-        height: "190%", scrolling: "no",
+        height: "200%", scrolling: "no",
         seamless: "seamless", frameborder: "0"
     });
     iframe.src = plot;
@@ -75,8 +84,9 @@ function loadPlot(regionTag, containerId, colour){
     plotContainer = removeAllChildNodes(plotContainer);
     // add an id variable to the container
     plotContainer.dataset.id = regionTag;
-    plotContainer.appendChild(plotTitle);
+    
     plotContainer.appendChild(iframe);
+    
 }
 
 
@@ -106,9 +116,10 @@ function loadLosRegs(){
 
 
 function initialiseCygnus(){
+    JS9.ADDZOOM = 0.5;
     JS9.Preload("./js9/data/nh-CYG-0.75-SLO-I.FITS",
         {
-            "zoom": "toFit", 
+            "zoom": "tofit", 
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 10, "onload": loadLosRegs,
