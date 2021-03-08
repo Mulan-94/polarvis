@@ -56,14 +56,15 @@ function loadPlot(regionTag, containerId, colour){
     JS9.ChangeRegions(id=regionTag, {color: colour});
 
     plotTitle.innerHTML = `Region ${regionTag} <span style="display:inline-block;
-                           width:20px; height:20px; border-radius:50%; 
-                           background-color:${colour}; vertical-align: middle;">
+                           width:15px; height:15px; border-radius:50%; 
+                           background-color:${colour};">
                            </span>
                            <a href="${plot}" target="_blank" rel="noreferrer noopener">
-                           <img src="static/icons/nt.png" style="vertical-align: middle;" width="20" 
-                           height="20" title="Open this plot in a new tab"></a>`;
-    plotTitle.style = `font-family: monospace; font-size: 10px; writing-mode: sideways-lr;
-                       position: absolute; align-self: end;`;
+                           <img src="static/icons/nt.png" style="text-top;" width="18"
+                           height="18" title="Open this plot in a new tab"></a>`;
+    plotTitle.style = `font-family: monospace; font-size: 10px; writing-mode: vertical-lr;
+                       position: absolute; height: 30%; text-align: end;
+                       z-index: 1;`;
 
     if (allContainer.childElementCount <2){
         allContainer.prepend(plotTitle);
