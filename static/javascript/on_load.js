@@ -1,3 +1,5 @@
+var colours = ["#A907F8", "#DC7C48", "#1DA5E2"];
+
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -62,22 +64,24 @@ function changeNames(parentElement, newName){
 
 function switchPosition(clickedRegionTag, containerId, colour){
     let mainParent = document.querySelector(".plots-container");
-    // let names = {"current": "A907F8", "previous": "DC7C48", "former": "1DA5E2"};
     let names = ["current", "previous", "former"];
-    let colours = ["#A907F8", "#DC7C48", "#1DA5E2"];
-
 
     let plotContainer = createPlotContainer(clickedRegionTag, containerId, colour);
+
+    // change a former colour to black
+
+    if (mainParent.querySelector("#former-plot").dataset.hasOwnProperty("id")){
+        JS9.ChangeRegions(id = mainParent.querySelector("#former-plot").dataset.id, { color: "black" });
+    }
+    
+    plotContainer.querySelector("#colour-rep").style.backgroundColor = colour;
+    plotContainer.style.borderColor = colour;
+
     mainParent.removeChild(mainParent.lastElementChild);
     mainParent.prepend(plotContainer);
 
-
     for (let i=0; i<mainParent.childElementCount; i++){
         if (mainParent.hasChildNodes()){
-            if (mainParent.children[i].querySelector("#colour-rep")){
-                mainParent.children[i].querySelector("#colour-rep").style.backgroundColor = colours[i];
-                mainParent.children[i].style.borderColor = colours[i];
-            }
             changeNames(mainParent.children[i], names[i]);
         }
     }
@@ -93,8 +97,12 @@ function lodLosPlots(im, xreg) {
         if (Number.isInteger(xregTagNum)) {
             console.log(`Region ID: ${xreg.id} ${xregTagNum == xreg.id ? "does" : "doesn't"} match tag number: ${xregTagNum}`);
             // change the clicked region to this color and width
-            JS9.ChangeRegions(id = xregTagNum, { color: "#A907F8", strokeWidth: 5 });
-            switchPosition(xregTagNum, "current", "#A907F8");
+            
+            JS9.ChangeRegions(id = xregTagNum, { color: colours[0], strokeWidth: 5 });
+            switchPosition(xregTagNum, "current", colours[0]);
+
+            // Rotate the colours
+            colours.push(colours.shift());
         }
         else {
             alert("No plots available for the selected region");
