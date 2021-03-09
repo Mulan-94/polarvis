@@ -265,7 +265,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     ###################################################
     ##############3 SEcond plot
     plot_specs = dict(glyph=Circle,
-                      axes=dict(x="lambdas", y="q", line_color=AMP_COLOUR, fill_color=AMP_COLOUR, size=CIRCLE_SIZE),
+                      axes=dict(x="lambdas", y="q", line_color=AMP_COLOUR, fill_color=AMP_COLOUR, size=CIRCLE_SIZE, fill_alpha=1, line_alpha=1),
                       labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Stokes Q and U")
                       )
@@ -274,7 +274,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
 
     # major kludge for my convenience O_o
     plot_specs = dict(glyph=Circle,
-                      axes=dict(x="lambdas", y="u", line_color=IMAG_COLOUR, fill_color=IMAG_COLOUR, size=CIRCLE_SIZE),
+                      axes=dict(x="lambdas", y="u", line_color="#20C2DF", fill_color="#20C2DF", size=CIRCLE_SIZE, fill_alpha=1, line_alpha=1),
                       labels=dict(x_axis_label="Wavelength [m²]",
                                   y_axis_label="Stokes Q and U")
                       )
@@ -317,6 +317,8 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
         for idx,( yx, colour) in enumerate([("amp", AMP_COLOUR), ("real", REAL_COLOUR), ("imag", IMAG_COLOUR), ("phase", ANGLE_COLOUR)]):
             # Faraday space
             depth_data = ColumnDataSource(data=compute_depth_data(d_file, clean, yx))
+            rdata = read_data(r_dir[_i])
+    
 
             plot_specs = dict(glyph=Line,
                             axes=dict(x="depth", y="fday_clean", line_color=colour, line_width=3, line_alpha=ALPHA),
@@ -333,22 +335,51 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
                 fspec_fig.renderers[idx].visible=False
             legends.append(LegendItem(label=yx.capitalize(), renderers=[fspec_fig.renderers[idx]], index=idx))
         
+        ###### SCALED AND SHIFTED RMTF
+        rmtf_data = ColumnDataSource(data={"r_depth": rdata[:,0], "rmtf": rdata[:,1]})
+        plot_specs = dict(glyph=Line,
+                            axes=dict(x="r_depth", y="rmtf", line_color="red", line_width=3, line_alpha=ALPHA),
+                            labels=dict(y_axis_label='Fractional Faraday Spectrum',
+                                        x_axis_label='Faraday Depth [rad m²]'))
+        fspec_fig = make_figure(rmtf_data, plot_specs, fig=fspec_fig)
+        fspec_fig.renderers[-1].visible=False
+        legends.append(LegendItem(label="Scaled and shifted RMTF", renderers=[fspec_fig.renderers[-1]]))
+        ####### END SCALED AND SHIFTED rmtf
+        
         fspec_fig.add_layout(Legend(items=legends, click_policy="hide", label_text_font_size="15px"))
         depths.append(Panel(child=fspec_fig, title=cstat.title()))
 
-    #RMTF DATA
+    legends = []
+    for idx,( yx, colour) in enumerate([("amp", AMP_COLOUR), ("real", REAL_COLOUR), ("imag", IMAG_COLOUR), ("phase", ANGLE_COLOUR)]):
+        ########## ORIGINAL RMTF 
+        print(f"Reading ../images/ORIGINAL-RMTF.txt ")        
 
-    plot_specs = dict(glyph=Line,
-                            axes=dict(x="r_depth", y="rmtf", line_color="red", line_width=3, line_alpha=ALPHA),
-                            labels=dict(y_axis_label='Rotation Measure Transfer Function',
-                                        x_axis_label='Faraday Depth [rad m²]')
-                            )
-    rdata = read_data(r_dir[_i])
-    rmtf_data = ColumnDataSource(data={"r_depth": rdata[:,0], "rmtf": rdata[:,1]})
-    fspec_fig2 = make_figure(rmtf_data, plot_specs)
+        #orginal rmtf data                
+        o_rdata = read_data("../images/ORIGINAL-RMTF.txt")
+
+        o_rmtf =  o_rdata[:,1] + 1j*  o_rdata[:,2]
+        ormtf_data = ColumnDataSource(data={"r_depth": o_rdata[:,0], "amp": np.abs(o_rmtf), "real": np.real(o_rmtf), "imag": np.imag(o_rmtf), "phase": np.angle(o_rmtf, deg=True)})
+
+        plot_specs = dict(glyph=Line,
+                                axes=dict(x="r_depth", y=yx, line_color=colour, line_width=3, line_alpha=ALPHA),
+                                labels=dict(y_axis_label='Rotation Measure Transfer Function',
+                                            x_axis_label='Faraday Depth [rad m²]')
+                                )
+        if yx == "phase":
+                plot_specs["axes"].update({"line_dash": "dashed"})
+        if idx < 1:
+            fspec_fig2 = make_figure(ormtf_data, plot_specs)
+            fspec_fig2.y_range.only_visible = True
+        else:
+            fspec_fig2 = make_figure(ormtf_data, plot_specs, fig=fspec_fig2)
+            fspec_fig2.renderers[idx].visible=False
+
+        legends.append(LegendItem(label=yx.capitalize(), renderers=[fspec_fig2.renderers[idx]], index=idx))
+    
+    fspec_fig2.add_layout(Legend(items=legends, click_policy="hide", label_text_font_size="15px"))
     depths.append(Panel(child=fspec_fig2, title="RMTF"))
 
-    #### end OF rmtf
+        ########### end OF ORIGINAL rmtf
     
 
     fspec_fig = Tabs(tabs=depths)
@@ -357,7 +388,7 @@ for _i, (l_file,  d_file) in enumerate(zip(l_dir, d_dir)):
     #                 ncols=1, sizing_mode="stretch_both")
 
     # added the next line for poster purpose
-    outp = gridplot(children=[fpol_fig, fspec_fig], ncols=2, sizing_mode="stretch_both")
+    outp = gridplot(children=[fpol_fig, fspec_fig], ncols=2, sizing_mode="stretch_both", toolbar_location="left")
 
     #change to .json if you want a json output
     o_file = f"reg{_i+1}.html"
