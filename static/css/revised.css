@@ -1,115 +1,139 @@
-html {
-    width: 99%;
-    height: 97%;
-    margin: 2px;
-    overflow: hidden;
+/* NEWER CSSS SUGGESSTION */
+html, body {
+    box-sizing: border-box;
+    width: auto;
+    height: 99.8%;
+    margin: 1px;
+    overflow: visible;
+    resize: none;
 }
 
 .layout-wrapper {
-    display: grid;
-    grid-template-areas:
-        "im-window current-plot"
-        "im-window previous-plot"
-        "im-window former-plot";
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(3, minmax(32.8vh, 32.8vh));
-    grid-column-gap: 3px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    height: 100%;
+    margin: 1px;
+    box-sizing: border-box;
+    border: red solid;
 }
 
 .images {
-    grid-area: im-window;
-    border: 2px solid rgb(190,208,244);
+    box-sizing: border-box;
+    margin-right: 3px;
+    border: 3px solid rgb(190,208,244);
     background-color: rgba(215,183,188, 0.2);
     border-radius: 8px;
-    padding: 5px;
-    display: flex;
-    flex-flow: column;
-}
-
-.js9-container {
     max-width: 100%;
-    height: 80%;
-    border: 1px dashed  rgb(148, 142, 142);
-    border-radius: 5px;
-    flex: 3;
+    min-width: 50%;
+    flex: 1;
+    max-height: 100%;
 }
 
-.JS9Toolbar{
-    overflow: visible;
+#JS9Menus_JS9Menubar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
 }
 
-#JS9ToolbarToolbar{
-    min-height: 80px !important;
-    height: auto;
+#JS9Menus_JS9Menubar > button {
+    flex:1;
 }
 
-.separator{
-    /* Empty space to allow expansion of the toolbar */
-    padding: 25px; 
-    order: 1;
-} 
-
-.JS9Statusbar {
-    margin-top: 5px;
-    border-top: 1px dashed rgb(148, 142, 142);
-    /* border-bottom: 1px dashed rgb(148, 142, 142); */
+#JS9ToolbarToolbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around; 
+    align-items: center;
+    height: 70px !important;
+    z-index: 0;
 }
 
-.JS9 {
-    width: 100%!important;
-    /* max-width: 100%!important; */
-    max-height: 68% !important;
+#JS9ToolbarToolbar > hr {
+    display: none;
+}
+
+#JS9ToolbarToolbar > div {
+    flex: 1;
+    border: dashed 1px;
+}
+
+#JS9{
+    width: 100% !important;
+    height: 50vh !important;
+    resize: none !important;
+}
+
+#JS9Menubar, #JS9ToolbarContainer, #JS9Toolbar, #JS9Colorbar, #JS9Statusbar{
+    width: 100% !important;
+}
+
+.separator {
+    height: 40px;
 }
 
 .js9-light-windows{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: flex-end;
-    flex: 2;
-    overflow: hidden;
+    box-sizing: border-box;
+    margin: 1px;
+    max-width: 100%;
+    width: 100%;
+    max-height: 22vh;
+    display: grid;
+    grid-template-areas:
+        "info panning magnifying";
+    grid-template-columns: repeat(3, minmax(10%,33.3%));
+    grid-template-rows: auto;
+}
+
+.info{
+    grid-area: info;
+}
+.panning{
+    grid-area: panning;
+}
+.magnifying{
+    grid-area: magnifying;
 }
 
 .light-window {
-    border: 1px none grey;
-    border-radius: 3%;
-    font-family: monospace;
-    padding: 5px;
+    box-sizing: border-box;
+    border: solid #eaa1ae 2px;
     margin: 1px;
-    flex: 1;
-    overflow: hidden;
-    justify-content: space-between;
+    max-height: 100%;
+    max-width: 100%;
+    align-self: center;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
-.js9InfoTable .input2 {
-    width: auto !important;
-}
-
-.js9Info{
-    overflow: auto;
-}
-
-.plots {
-    border: 2px solid rgb(190,208,244);
-    background-color: #89ABE35F;
-    border-radius: 8px;
-    padding: 3px;
-    /* Added min height and removed padding from 150px to maintain */
-    min-height: 29vh;
-    height: 100%;
+.JS9Container {
     width: 100%;
-    display: flex;
-    height: 96.5%;
-    margin: 2px;
 }
 
-.plot-holder{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: visible;
-    resize: both;
+#JS9Info, canvas.JS9Panner, canvas.JS9Magnifier{
+    box-sizing: border-box;
+    /* Prevent the windows from filling up too much using obj-fit */
+    object-fit: cover; 
+    /* Also changes dynamically in the JS */
+    height: 25vh !important;
+    width: 32.5vw !important;
+    resize: none;
+    border: solid green;
 }
+
+/* #JS9Info{
+    box-sizing: border-box;
+    height: 23.5vh !important;
+} */
+
+/*
+td {
+    width: 12%;
+} */
 
 iframe {
     border: none;
@@ -120,6 +144,7 @@ iframe {
     -webkit-transform: scale(0.5);
     -webkit-transform-origin: 0 0;
     width: 200%;
+    height: 63.6vh !important;
     opacity: 1;
     animation: fadeIn ease 5s;
     -webkit-animation: fadeIn ease 5s;
@@ -133,23 +158,24 @@ iframe {
   100% {opacity:1;}
 }
 
-
-.plots-container.previous {
-    grid-area: previous-plot;
+.plots-container{
+    flex: 1;
+    max-width:100%;
+    box-sizing: border-box;
+    display:grid;
+    grid-template-rows: repeat(3, max(32.3vh));
+    grid-template-columns: max(100%);
+    grid-row-gap: 2px;
+    max-height: 100%;
+    overflow: hidden;
 }
 
-.plots-container.current {
-    grid-area: current-plot;
-}
 
-.plots-container.former {
-    grid-area: former-plot;
-}
-
-.plots.current {
-  margin-top: 0px;
-}
-
-.plots.former {
-  margin-bottom: 0px;
+.plots{
+    height: 100%;
+    box-sizing: border-box;
+    border: 2px solid rgb(190,208,244);
+    background-color: #89ABE35F;
+    border-radius: 8px;
+    padding: 3px;
 }
