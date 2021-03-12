@@ -16,7 +16,6 @@ html, body {
     height: 100%;
     margin: 1px;
     box-sizing: border-box;
-    border: red solid;
 }
 
 .images {
@@ -29,6 +28,11 @@ html, body {
     min-width: 50%;
     flex: 1;
     max-height: 100%;
+}
+
+.js9-container {
+    border: 1px dashed  rgb(148, 142, 142);
+    border-radius: 5px;
 }
 
 #JS9Menus_JS9Menubar{
@@ -64,12 +68,18 @@ html, body {
 
 #JS9{
     width: 100% !important;
-    height: 50vh !important;
+    height: 54vh !important;
     resize: none !important;
 }
 
 #JS9Menubar, #JS9ToolbarContainer, #JS9Toolbar, #JS9Colorbar, #JS9Statusbar{
     width: 100% !important;
+}
+
+.JS9Statusbar {
+    margin-top: 5px;
+    border-top: 1px dashed rgb(148, 142, 142);
+    /* border-bottom: 1px dashed rgb(148, 142, 142); */
 }
 
 .separator {
@@ -101,13 +111,13 @@ html, body {
 
 .light-window {
     box-sizing: border-box;
-    border: solid #eaa1ae 2px;
-    margin: 1px;
+    border-collapse: collapse;
+    padding: 5px;
     max-height: 100%;
     max-width: 100%;
     align-self: center;
     overflow-x: auto;
-    overflow-y: auto;
+    /* overflow-y: hidden; */
 }
 
 .JS9Container {
@@ -122,17 +132,11 @@ html, body {
     height: 25vh !important;
     width: 32.5vw !important;
     resize: none;
-    border: solid green;
 }
 
 /* #JS9Info{
     box-sizing: border-box;
     height: 23.5vh !important;
-} */
-
-/*
-td {
-    width: 12%;
 } */
 
 iframe {
@@ -178,4 +182,18 @@ iframe {
     background-color: #89ABE35F;
     border-radius: 8px;
     padding: 3px;
+}
+
+@media screen and (max-width: 1020px){
+    #JS9{
+        height: 50vh !important;
+    }
+    html, .light-window{
+        /* background-color: black; */
+        overflow-y: auto;
+    }
+
+     .layout-wrapper{
+            flex-direction: column;
+    }
 }
