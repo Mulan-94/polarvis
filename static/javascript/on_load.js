@@ -142,7 +142,7 @@ function initialiseCygnus() {
     JS9.ADDZOOM = 0.5;
     JS9.Preload("./js9install/data/nh-CYG-0.75-SLO-I.FITS",
         {
-            "zoom": 3,
+            "zoom": "tofit",
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 10, "onload": loadLosRegs,
