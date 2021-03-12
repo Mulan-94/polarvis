@@ -50,10 +50,9 @@ function createPlotContainer(regionTag, containerId, colour){
     container.appendChild(plotTitle);
     container.appendChild(plotHolder);
     return container;
-
-    // // add an id variable to the container
-    // return [plotTitle, iframe];
 }
+
+
 
 function changeNames(parentElement, newName){
     // change class and ids for the plot holder
@@ -61,6 +60,8 @@ function changeNames(parentElement, newName){
     parentElement.className = `plots ${newName}`;
     parentElement.querySelector(".plot-holder").id = `${newName}-plot`;
 }
+
+
 
 function switchPosition(clickedRegionTag, containerId, colour){
     let mainParent = document.querySelector(".plots-container");
@@ -90,6 +91,9 @@ function switchPosition(clickedRegionTag, containerId, colour){
     
 }
 
+
+
+
 function lodLosPlots(im, xreg) {
     let xregTagNum = Number(xreg.tags[0]);
 
@@ -98,16 +102,8 @@ function lodLosPlots(im, xreg) {
         let pc = document.createElement("div");
         pc.classList.add("plots-container");
         document.querySelector(".layout-wrapper").appendChild(pc);
-        // Change the size of the panner and mag windows dynamically
-        let wins = document.querySelectorAll("canvas.JS9Panner, canvas.JS9Magnifier, .JS9Container");
-        let winWidth = document.querySelector(".light-window").clientWidth;
-        let winHeight = document.querySelector(".light-window").clientHeight;
-        for (let i=0; i<wins.length;i++){
-            wins[i].setAttribute("style", `width:${winWidth}px!important`);
-            wins[i].setAttribute("style", `height:${winHeight}px!important`)
-            wins[i].setAttribute("style", "object-fit:cover !important");
-        }
     }
+
 
     // check if region is a pre determined line of site or an additional region
     if (xreg.tags[1] == "los") {
@@ -125,8 +121,12 @@ function lodLosPlots(im, xreg) {
         else {
             alert("No plots available for the selected region");
         }
+        console.log("I'm out");
     }
 }
+
+
+
 
 
 function loadLosRegs() {
@@ -138,11 +138,12 @@ function loadLosRegs() {
 }
 
 
+
 function initialiseCygnus() {
     JS9.ADDZOOM = 0.5;
     JS9.Preload("./js9install/data/nh-CYG-0.75-SLO-I.FITS",
         {
-            "zoom": "tofit",
+            // "zoom": "tofit",
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 10, "onload": loadLosRegs,
