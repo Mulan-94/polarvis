@@ -18,9 +18,10 @@ html, body {
 
 .images {
     box-sizing: border-box;
-/*     border: 3px solid rgb(190,208,244); */
+    border: 3px solid rgb(190,208,244);
     border-radius: 8px;
     margin-right: 3px;
+    margin-bottom: 3px;
     background-color: rgba(215,183,188, 0.2);
     max-width: 100%;
     min-width: 720px;
@@ -28,7 +29,6 @@ html, body {
     max-height: 100%;
     height: 100%;
     min-height: 980px;
-    border:solid black;
     
     flex: 1;
     display: grid;
@@ -122,28 +122,28 @@ html, body {
 .light-window {
     box-sizing: border-box;
     border-collapse: collapse;
-    padding: 5px;
+    padding: 1px;
     max-height: 100%;
     max-width: 100%;
 }
 
-/* .light-window div{ */
-    /* height: 100% !important;
-    width: 100% !important; */
-/* } */
 
-/* .light-window canvas{ */
-    /* object-fit: cover;
-    box-sizing: border-box; */
-    /* height: 100% !important;
-    width: 100% !important; */
-/* } */
+.info div, .magnifying div { 
+    height: 100% !important;
+    width: 100% !important;
+}
 
-/* 
-#JS9Panner-panner-shapeLayer{
-    width: initial !important;
-    height: initial !important;
-} */
+.info canvas, .magnifying canvas{
+    object-fit: cover;
+    box-sizing: border-box;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.panning{
+    justify-self: center;
+    height:100% !important;
+}
 
 iframe {
     border: none;
@@ -176,14 +176,13 @@ iframe {
     display:grid;
     /* grid-template-rows: repeat(3, max(32.3%)); */
     grid-auto-flow: row;
-    grid-auto-rows: max(32.3%);
+    grid-auto-rows: max(33.2%);
     grid-template-columns: max(100%);
     grid-row-gap: 2px;
     max-height: 100%;
     min-height: 980px;
     height: 100%;
 }
-
 
 .plots{
     height: 100%;
@@ -193,13 +192,4 @@ iframe {
     border-radius: 8px;
     padding: 3px;
     overflow: hidden;
-}
-
-@media screen and (max-width: 1020px){
-    /* #JS9{
-        height: 50% !important;
-    } */
-    .layout-wrapper{
-            /* flex-direction: column; */
-    }
 }
