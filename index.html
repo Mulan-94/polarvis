@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    
+
     <!-- Generic stuff -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="mulan-94">
     <meta charset="utf-8">
-    
+
     <!-- Bokeh stuff-->
     <script src="./static/javascript/bokeh/bokeh-2.2.3.min.js"></script>
 
@@ -23,61 +24,48 @@
     <script src="./js9/js9prefs.js"></script>
     <script src="./js9install/js9support.js"></script>
     <script src="./js9install/js9.js"></script>
-    
+
     <script src="./js9install/js9plugins.js"></script>
     <script type="text/javascript" src="./js9install/plugins/core/info.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./static/css/revised.css">
-  
-    <script type="text/javascript"> 
-      JS9.CloseImage({clear: true});
-      $("document").ready(function (){
+
+    <script type="text/javascript">
+      JS9.CloseImage({ clear: true });
+      $("document").ready(function () {
         initialiseCygnus();
       });
     </script>
-	
+
 
     <title>JS9</title>
   </head>
 
   <body>
-      <div class="layout-wrapper"> 
+    <div class="layout-wrapper">
       <div class="images">
         <div class="js9-container">
-          <div class="JS9Menubar" data-width="100%"></div>
-          <div class="JS9Toolbar" data-width="100%" style="height: 60px"></div>
+          <div class="JS9Menubar"></div>
+          <div class="JS9Toolbar"></div>
           <div class="separator"></div>
           <div class="JS9"></div>
-          <div class="JS9Colorbar" data-width="100%"></div>
-          <div class="JS9Statusbar" data-width="100%"></div>
+          <div class="JS9Colorbar"></div>
+          <div class="JS9Statusbar"></div>
         </div>
         <div class="js9-light-windows">
           <div class="light-window info">
-            <div>Image information</div>
-            <div class="JS9Info" data-width="auto"></div>
+            <div class="JS9Info"></div>
           </div>
           <div class="light-window panning">
-            <div>Panner</div>
-            <div class="JS9Panner" data-width="auto"></div>
+            <div class="JS9Panner"></div>
           </div>
           <div class="light-window magnifying">
-            <div>Magnifier</div>
-            <div class="JS9Magnifier" data-width="auto"></div>
+            <div class="JS9Magnifier"></div>
           </div>
         </div>
       </div>
-      <div class="plots-container">
-        <div class="plots current">
-          <div class="plot-holder" id="current-plot"></div>
-        </div>
-        <div class="plots previous">
-          <div class="plot-holder" id="previous-plot"></div>
-        </div>
-        <div class="plots former">
-          <div class="plot-holder" id="former-plot"></div>
-        </div>
-      </div>
+    </div>
     </div>
   </body>
 

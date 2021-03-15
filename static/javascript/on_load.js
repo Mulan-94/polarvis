@@ -50,10 +50,9 @@ function createPlotContainer(regionTag, containerId, colour){
     container.appendChild(plotTitle);
     container.appendChild(plotHolder);
     return container;
-
-    // // add an id variable to the container
-    // return [plotTitle, iframe];
 }
+
+
 
 function changeNames(parentElement, newName){
     // change class and ids for the plot holder
@@ -62,22 +61,26 @@ function changeNames(parentElement, newName){
     parentElement.querySelector(".plot-holder").id = `${newName}-plot`;
 }
 
+
+
 function switchPosition(clickedRegionTag, containerId, colour){
     let mainParent = document.querySelector(".plots-container");
     let names = ["current", "previous", "former"];
 
     let plotContainer = createPlotContainer(clickedRegionTag, containerId, colour);
 
-    // change a former colour to black
-
-    if (mainParent.querySelector("#former-plot").dataset.hasOwnProperty("id")){
-        JS9.ChangeRegions(id = mainParent.querySelector("#former-plot").dataset.id, { color: "black" });
-    }
-    
     plotContainer.querySelector("#colour-rep").style.backgroundColor = colour;
     plotContainer.style.borderColor = colour;
 
-    mainParent.removeChild(mainParent.lastElementChild);
+    // change a former colour to black
+
+    if (mainParent.querySelector("#former-plot") && mainParent.querySelector("#former-plot").dataset.hasOwnProperty("id")){
+        JS9.ChangeRegions(id = mainParent.querySelector("#former-plot").dataset.id, { color: "black" });
+    }
+
+    if (mainParent.childElementCount>2){
+        mainParent.removeChild(mainParent.lastElementChild);
+    }
     mainParent.prepend(plotContainer);
 
     for (let i=0; i<mainParent.childElementCount; i++){
@@ -88,8 +91,36 @@ function switchPosition(clickedRegionTag, containerId, colour){
     
 }
 
+function organiseLights(){
+    document.querySelector(".images").style.cssText = `
+        grid-template-areas:
+            "main"
+            "light";
+        grid-template-rows: 70% 29.5%;
+        grid-template-columns: max(100%);
+        `;
+
+    document.querySelector(".js9-light-windows").style.cssText = `
+        grid-template-areas:
+            "info panning magnifying";
+        grid-template-columns: repeat(3, minmax(10%,33.3%));
+        grid-template-rows: auto;
+        `;
+}
+
+
+
 function lodLosPlots(im, xreg) {
     let xregTagNum = Number(xreg.tags[0]);
+
+    // dynamically create plots container
+    if(! document.querySelector(".plots-container")){
+        organiseLights();
+        let pc = document.createElement("div");
+        pc.classList.add("plots-container");
+        document.querySelector(".layout-wrapper").appendChild(pc);
+    }
+
 
     // check if region is a pre determined line of site or an additional region
     if (xreg.tags[1] == "los") {
@@ -107,8 +138,12 @@ function lodLosPlots(im, xreg) {
         else {
             alert("No plots available for the selected region");
         }
+        console.log("I'm out");
     }
 }
+
+
+
 
 
 function loadLosRegs() {
@@ -120,11 +155,12 @@ function loadLosRegs() {
 }
 
 
+
 function initialiseCygnus() {
     JS9.ADDZOOM = 0.5;
     JS9.Preload("./js9install/data/nh-CYG-0.75-SLO-I.FITS",
         {
-            "zoom": "tofit",
+            // "zoom": "tofit",
             "colormap": "inferno",
             "scale": "linear", "scalemin": -0.009,
             "scalemax": 10, "onload": loadLosRegs,
