@@ -1,114 +1,148 @@
-html {
-    width: 99%;
-    height: 97%;
-    margin: 2px;
-    overflow: hidden;
+html, body {
+    box-sizing: border-box;
+    width: auto;
+    height: 99.8%;
+    margin: 1px;
+    resize: none;
 }
 
 .layout-wrapper {
-    display: grid;
-    grid-template-areas:
-        "im-window current-plot"
-        "im-window previous-plot"
-        "im-window former-plot";
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(3, minmax(32.8vh, 32.8vh));
-    grid-column-gap: 3px;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 1px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-between;
 }
 
 .images {
-    grid-area: im-window;
-    border: 2px solid rgb(190,208,244);
-    background-color: rgba(215,183,188, 0.2);
+    box-sizing: border-box;
+    border: 3px solid rgb(190,208,244);
     border-radius: 8px;
-    padding: 5px;
-    display: flex;
-    flex-flow: column;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    background-color: rgba(215,183,188, 0.2);
+    max-width: 100%;
+    min-width: 720px;
+    
+    max-height: 100%;
+    height: 100%;
+    min-height: 720px;
+    
+    flex: 1;
+    display: grid;
+    grid-template-areas:
+        "main"
+        "light";
+    grid-template-rows: 70% 29.5%;
+    grid-template-columns: max(100%);
 }
 
 .js9-container {
-    max-width: 100%;
-    height: 80%;
-    border: 1px dashed  rgb(148, 142, 142);
+    border: 1px dashed rgb(148, 142, 142);
     border-radius: 5px;
-    flex: 3;
+    grid-area: main;
 }
 
-.JS9Toolbar{
-    overflow: visible;
+#JS9Menus_JS9Menubar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
 }
 
-#JS9ToolbarToolbar{
-    min-height: 80px !important;
-    height: auto;
+#JS9Menus_JS9Menubar > button {
+    flex:1;
 }
 
-.separator{
-    /* Empty space to allow expansion of the toolbar */
-    padding: 25px; 
-    order: 1;
-} 
+#JS9ToolbarToolbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around; 
+    align-items: center;
+    height: 70px !important;
+    z-index: 0;
+}
+
+#JS9ToolbarToolbar > hr {
+    display: none;
+}
+
+#JS9ToolbarToolbar > div {
+    flex: 1;
+    border: dashed 1px;
+}
+
+#JS9{
+    width: 100% !important;
+    height: 68% !important;
+    resize: none !important;
+}
+
+#JS9Menubar, #JS9ToolbarContainer, #JS9Toolbar, #JS9Colorbar, #JS9Statusbar{
+    width: 100% !important;
+}
 
 .JS9Statusbar {
     margin-top: 5px;
     border-top: 1px dashed rgb(148, 142, 142);
-    /* border-bottom: 1px dashed rgb(148, 142, 142); */
 }
 
-.JS9 {
-    width: 100%!important;
-    /* max-width: 100%!important; */
-    max-height: 68% !important;
+.separator {
+    height: 40px;
 }
 
 .js9-light-windows{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: flex-end;
-    flex: 2;
-    overflow: hidden;
+    grid-area: light;
+    box-sizing: border-box;
+    margin: 1px;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+        "info panning magnifying";
+    grid-template-columns: repeat(3, minmax(10%,33.3%));
+    grid-template-rows: auto;
+}
+
+.info{
+    grid-area: info;
+}
+.panning{
+    grid-area: panning;
+    justify-self: center;
+    /* height:100% !important; */
+}
+.magnifying{
+    grid-area: magnifying;
 }
 
 .light-window {
-    border: 1px none grey;
-    border-radius: 3%;
-    font-family: monospace;
-    padding: 5px;
-    margin: 1px;
-    flex: 1;
-    overflow: hidden;
-    justify-content: space-between;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    padding: 1px;
+    max-height: 100%;
+    max-width: 100%;
 }
 
-.js9InfoTable .input2 {
-    width: auto !important;
+.js9InfoTable input{
+    max-width: 210px !important;
 }
 
-.js9Info{
-    overflow: auto;
+.info div, .magnifying div { 
+    height: 100% !important;
+    width: 100% !important;
 }
 
-.plots {
-    border: 2px solid rgb(190,208,244);
-    background-color: #89ABE35F;
-    border-radius: 8px;
-    padding: 3px;
-    /* Added min height and removed padding from 150px to maintain */
-    min-height: 29vh;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    height: 96.5%;
-    margin: 2px;
-}
-
-.plot-holder{
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: visible;
-    resize: both;
+.info canvas, .magnifying canvas{
+    object-fit: cover;
+    box-sizing: border-box;
+    height: 100% !important;
+    width: 100% !important;
 }
 
 iframe {
@@ -120,6 +154,7 @@ iframe {
     -webkit-transform: scale(0.5);
     -webkit-transform-origin: 0 0;
     width: 200%;
+    height: 63.6vh !important;
     opacity: 1;
     animation: fadeIn ease 5s;
     -webkit-animation: fadeIn ease 5s;
@@ -133,23 +168,54 @@ iframe {
   100% {opacity:1;}
 }
 
-
-.plots-container.previous {
-    grid-area: previous-plot;
+.plots-container{
+    flex: 1;
+    max-width:100%;
+    min-width: 720px;
+    box-sizing: border-box;
+    display:grid;
+    /* grid-template-rows: repeat(3, max(32.3%)); */
+    grid-auto-flow: row;
+    grid-auto-rows: max(33.2%);
+    grid-template-columns: max(100%);
+    grid-row-gap: 2px;
+    max-height: 100%;
+    min-height: 720px;
+    height: 100%;
 }
 
-.plots-container.current {
-    grid-area: current-plot;
+.plots{
+    height: 100%;
+    box-sizing: border-box;
+    border: 2px solid rgb(190,208,244);
+    background-color: #89ABE35F;
+    border-radius: 8px;
+    padding: 3px;
+    overflow: hidden;
 }
 
-.plots-container.former {
-    grid-area: former-plot;
-}
+@media screen and (min-width:1020px){
+    .images{
+        grid-template-areas:
+            "main light";
+        grid-template-rows: max(100%);
+        grid-template-columns: 70% 29.5%;
+    }   
 
-.plots.current {
-  margin-top: 0px;
-}
+    .js9-light-windows{
+        grid-template-areas:
+            "info"
+            "panning"
+            "magnifying";
+        grid-template-rows: repeat(3, minmax(10%,33.3%));
+        grid-template-columns: auto;
+    }
 
-.plots.former {
-  margin-bottom: 0px;
+    .light-window{
+        margin-top: 40px;
+    }
+
+    #JS9{
+        height: 79% !important;
+    }
 }
