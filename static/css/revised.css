@@ -213,12 +213,12 @@ iframe {
         grid-template-rows: repeat(3, minmax(10%,33.3%));
         grid-template-columns: auto;
     }
-    .html{
-        background-color: red;
+
+    .light-window{
+        margin-top: 40px;
     }
 
     #JS9{
-    height: 80% !important;
+        height: 79% !important;
     }
-
 }

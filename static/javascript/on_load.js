@@ -91,6 +91,22 @@ function switchPosition(clickedRegionTag, containerId, colour){
     
 }
 
+function organiseLights(){
+    document.querySelector(".images").style.cssText = `
+        grid-template-areas:
+            "main"
+            "light";
+        grid-template-rows: 70% 29.5%;
+        grid-template-columns: max(100%);
+        `;
+
+    document.querySelector(".js9-light-windows").style.cssText = `
+        grid-template-areas:
+            "info panning magnifying";
+        grid-template-columns: repeat(3, minmax(10%,33.3%));
+        grid-template-rows: auto;
+        `;
+}
 
 
 
@@ -99,6 +115,7 @@ function lodLosPlots(im, xreg) {
 
     // dynamically create plots container
     if(! document.querySelector(".plots-container")){
+        organiseLights();
         let pc = document.createElement("div");
         pc.classList.add("plots-container");
         document.querySelector(".layout-wrapper").appendChild(pc);
