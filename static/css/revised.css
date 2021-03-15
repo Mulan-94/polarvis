@@ -127,6 +127,9 @@ html, body {
     max-width: 100%;
 }
 
+.js9InfoTable input{
+    max-width: 210px !important;
+}
 
 .info div, .magnifying div { 
     height: 100% !important;
@@ -192,4 +195,30 @@ iframe {
     border-radius: 8px;
     padding: 3px;
     overflow: hidden;
+}
+
+@media screen and (min-width:1020px){
+    .images{
+        grid-template-areas:
+            "main light";
+        grid-template-rows: max(100%);
+        grid-template-columns: 70% 29.5%;
+    }   
+
+    .js9-light-windows{
+        grid-template-areas:
+            "info"
+            "panning"
+            "magnifying";
+        grid-template-rows: repeat(3, minmax(10%,33.3%));
+        grid-template-columns: auto;
+    }
+    .html{
+        background-color: red;
+    }
+
+    #JS9{
+    height: 80% !important;
+    }
+
 }
