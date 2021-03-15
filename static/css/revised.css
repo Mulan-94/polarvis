@@ -114,6 +114,8 @@ html, body {
 }
 .panning{
     grid-area: panning;
+    justify-self: center;
+    /* height:100% !important; */
 }
 .magnifying{
     grid-area: magnifying;
@@ -141,11 +143,6 @@ html, body {
     box-sizing: border-box;
     height: 100% !important;
     width: 100% !important;
-}
-
-.panning{
-    justify-self: center;
-    height:100% !important;
 }
 
 iframe {
