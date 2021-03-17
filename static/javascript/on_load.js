@@ -32,8 +32,8 @@ function createPlotContainer(regionTag, containerId, colour){
                            <img src="static/icons/nt.png" style="text-top;" width="18"
                            height="18" title="Open this plot in a new tab"></a>`;
     plotTitle.style = `font-family: monospace; font-size: 10px; writing-mode: vertical-lr;
-                       position: absolute; height: 30%; text-align: end;
-                       z-index: 0;`;
+                       position: absolute; height: 15%; text-align: end;
+                       z-index: 1; margin-top: 120px;`;
 
     Object.assign(iframe, {
         width: "97vw",
