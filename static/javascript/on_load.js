@@ -33,7 +33,7 @@ function createPlotContainer(regionTag, containerId, colour){
                            height="18" title="Open this plot in a new tab"></a>`;
     plotTitle.style = `font-family: monospace; font-size: 10px; writing-mode: vertical-lr;
                        position: absolute; height: 30%; text-align: end;
-                       z-index: 1;`;
+                       z-index: 0;`;
 
     Object.assign(iframe, {
         width: "97vw",
