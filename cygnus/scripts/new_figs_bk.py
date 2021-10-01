@@ -34,11 +34,11 @@ from bokeh.layouts import row, gridplot, layout, column
 from bokeh.models import (ColumnDataSource, Whisker, Line, Circle, Range1d, LinearAxis, DataRange1d,
                           Panel, Tabs, Legend, LegendItem)
 from bokeh.plotting import figure
-from flask import url_for
 
 #import pandas as pd
 
 from ipdb import set_trace
+set_trace()
 
 # os.environ["CYGSERVER"] = os.path.abspath("..") REmoved this because path keeps changing whenthe running directory is different
 os.environ["CYGSERVER"] = os.path.abspath(__file__).split("scripts")[0]
