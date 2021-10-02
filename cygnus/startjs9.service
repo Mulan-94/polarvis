@@ -1,0 +1,13 @@
+[unit]
+Description=Daemon to restart js9 helper automatically
+
+[Service]
+Type=simple
+ExecStart=$HOME/daemons/start_js9.sh
+RestartSec=300
+Restart=on-failure
+StandardOutput=file:$HOME/cygnus_website/logs/js9node.log
+StandardError=file:$HOME/cygnus_website/logs/js9node.log
+
+[Install]
+WantedBy=multi-user.target
