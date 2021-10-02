@@ -109,3 +109,19 @@ After install, the JS9 site can be configured by files in your JS9 directory cal
 The symbol `&` can be added at the end of this command to make it run in the background. Debugging can also be activated in 2 ways:
 1. In js9prefs.js, set `globalOpts.debug` to any number greater than 0.
 2. Run the server as follows: `DEBUG='*' nodejs js9Helper.js`
+
+## Integration with The Cygnus Experience
+1. git clone git@github.com:ratt-ru/cygnus-experience.git
+2. cd cygnus-experience
+
+Reinitalise submodules at root dir, and populate tthe theme's workspace files
+3. git submodule init
+4. git submodule update
+
+Build the website into where the cygnus vis project is at
+5. hugo -D -E -d /home/lexya/Desktop/pictor-A-stuff/JS9_stuff/cygserver/ --minify
+
+Alternatively, 
+1. add the polarvis files to cygnus-experience/static
+2. hugo -D -E -d /home/to/wherever/
+This will dump the polarvis files a level lower than the cygnus exp files. The iedea is to have cyg_exp -> cygnus
