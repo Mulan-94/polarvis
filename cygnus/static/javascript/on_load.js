@@ -19,7 +19,7 @@ function createPlotContainer(regionTag, containerId, colour){
     // plotHOlder's child
     let iframe = document.createElement("iframe");
     let plotPath = "cygnus/plots/reg";
-    let plot = `http://${location.host}/${plotPath}${regionTag}.html`;
+    let plot = `${location.href}${plotPath}${regionTag}.html`;
     
     // console.log(`changing region ${regionTag} to colour ${colour}. Loading into ${containerId}`);
     JS9.ChangeRegions(id = regionTag, { color: colour });
