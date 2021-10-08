@@ -1,7 +1,7 @@
 # polarvis
 Musings on Polarimetric Vis
 
-This is a repo for a website residing at: www.cygnus.ratt-ru.org/cygnus. It gives an interactive visual representation of, among other things, fractional polarisation of various lines of sight on the Cygnus-A galaxy. The website is based on work done by Sebokolodi Et. Al (2020) in: A Wideband Polarization Study of Cygnus A with the Jansky Very Large Array. I. The Observations and Data. The FITS viewer used is JS9, which is browser based, and the server is Apache running on Linux. The requirements to setup are:
+This is a repo for a website residing at: https://cygnus.ratt.center/cygnus. It gives an interactive visual representation of, among other things, fractional polarisation of various lines of sight on the Cygnus-A galaxy. The website is based on work done by Sebokolodi Et. Al (2020) in: A Wideband Polarization Study of Cygnus A with the Jansky Very Large Array. I. The Observations and Data. The FITS viewer used is JS9, which is browser based, and the server is Apache running on Linux. The requirements to setup are:
 1. JS9
 2. CFITSIO
 3. Apache
