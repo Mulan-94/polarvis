@@ -31,6 +31,7 @@ __pycache__/
 js9install/*
 !js9install/js9prefs.js
 !js9install/js9Prefs.json
+!js9install/js9Secure.json
 !js9install/data
 !js9/js9prefs.js
 !js9/js9Prefs.json

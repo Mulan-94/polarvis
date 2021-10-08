@@ -1,0 +1,5 @@
+{
+  "key":  "/etc/ssl/cygnus.ratt.center-ssl-certs/private.key",
+  "cert": "/etc/ssl/cygnus.ratt.center-ssl-certs/certificate.crt",
+  "ca":   "/etc/ssl/cygnus.ratt.center-ssl-certs/ca_bundle.crt"
+}
