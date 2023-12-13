@@ -1,0 +1,16 @@
+[unit]
+Description=Daemon to restart js9 helper automatically
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/
+ExecStart=/bin/bash -c "/home/daemons/start_js9.sh"
+RestartSec=300
+Restart=on-failure
+StandardOutput=file:/home/logs/js9node.log
+StandardError=file:/home/logs/js9node.log
+
+[Install]
+WantedBy=multi-user.target
